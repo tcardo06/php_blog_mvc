@@ -24,6 +24,27 @@
                         <a class="nav-link" href="<?=ROOT_URL?>?p=blog">Blog</a>
                     </li>
                 </ul>
+                <ul class="navbar-nav ms-auto">
+                    <?php if (!isset($_SESSION['is_logged'])): ?>
+                        <!-- Show login and register if the user is not logged in -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?=ROOT_URL?>?p=user&a=login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?=ROOT_URL?>?p=user&a=register">Register</a>
+                        </li>
+                    <?php else: ?>
+                        <!-- Show logout and user role if logged in -->
+                        <li class="nav-item">
+                            <span class="navbar-text">
+                                <?= $_SESSION['role'] === 'admin' ? 'Admin' : 'User' ?>
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?=ROOT_URL?>?p=admin&a=logout">Logout</a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
             </div>
         </div>
     </nav>

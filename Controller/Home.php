@@ -6,7 +6,6 @@ class Home
 {
     public function index()
     {
-        // This will load the home page view (about me + contact form)
         require ROOT_PATH . 'View/home.php';
     }
 

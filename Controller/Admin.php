@@ -11,13 +11,15 @@ class Admin extends Blog
 
         if (isset($_POST['email'], $_POST['password']))
         {
-            $this->oUtil->getModel('Admin');
-            $this->oModel = new \TestProject\Model\Admin;
+            $this->oUtil->getModel('User');
+            $this->oModel = new \TestProject\Model\User;
 
-            $sHashPassword =  $this->oModel->login($_POST['email']);
-            if (password_verify($_POST['password'], $sHashPassword))
+            $oUser = $this->oModel->login($_POST['email']);
+            if ($oUser && password_verify($_POST['password'], $oUser->password))
             {
-                $_SESSION['is_logged'] = 1; // Admin is logged now
+                $_SESSION['is_logged'] = 1; // User is logged in
+                $_SESSION['role'] = $oUser->role; // Store role (admin/user)
+
                 header('Location: ' . ROOT_URL . '?p=blog&a=all');
                 exit;
             }
@@ -35,7 +37,6 @@ class Admin extends Blog
         if (!$this->isLogged())
             exit;
 
-        // If there is a session, destroy it to disconnect the admin
         if (!empty($_SESSION))
         {
             $_SESSION = array();
@@ -43,7 +44,6 @@ class Admin extends Blog
             session_destroy();
         }
 
-        // Redirect to the homepage
         header('Location: ' . ROOT_URL);
         exit;
     }
