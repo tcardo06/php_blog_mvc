@@ -1,17 +1,26 @@
-<?php require 'inc/header.php' ?>
-<?php require 'inc/msg.php' ?>
+<?php require 'inc/header.php'; ?>
+<?php require 'inc/msg.php'; ?>
 
-<form action="" method="post">
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <form action="" method="post" class="border p-4 bg-white shadow-sm rounded">
+            <h2 class="text-center mb-4">Login</h2>
 
-    <p><label for="email">Email:</label><br />
-        <input type="email" name="email" id="email" required="required" />
-    </p>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" name="email" id="email" class="form-control" required="required" />
+            </div>
 
-    <p><label for="password">Password:</label><br />
-        <input type="password" name="password" id="password" required="required" />
-    </p>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" name="password" id="password" class="form-control" required="required" />
+            </div>
 
-    <p><input type="submit" value="Login" /></p>
-</form>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-<?php require 'inc/footer.php' ?>
+<?php require 'inc/footer.php'; ?>
