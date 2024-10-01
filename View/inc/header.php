@@ -8,44 +8,38 @@
     <link rel="stylesheet" href="<?=ROOT_URL?>static/style.css" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <!-- Home button -->
-            <a class="navbar-brand" href="<?=ROOT_URL?>">Home</a>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="<?=ROOT_URL?>">Home</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <!-- Blog page link -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?=ROOT_URL?>?p=blog">Blog</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-auto">
-                    <?php if (!isset($_SESSION['is_logged'])): ?>
-                        <!-- Show login and register if the user is not logged in -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?=ROOT_URL?>?p=user&a=login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?=ROOT_URL?>?p=user&a=register">Register</a>
-                        </li>
-                    <?php else: ?>
-                        <!-- Show logout and user role if logged in -->
-                        <li class="nav-item">
-                            <span class="navbar-text">
-                                <?= $_SESSION['role'] === 'admin' ? 'Admin' : 'User' ?>
-                            </span>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?=ROOT_URL?>?p=admin&a=logout">Logout</a>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container mt-4">
+          <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                  <li class="nav-item">
+                      <a class="nav-link" href="<?=ROOT_URL?>?p=blog">Blog</a>
+                  </li>
+              </ul>
+              <ul class="navbar-nav ms-auto">
+                  <?php if (!isset($_SESSION['is_logged'])): ?>
+                      <li class="nav-item">
+                          <a class="nav-link" href="<?=ROOT_URL?>?p=user&a=login">Login</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="<?=ROOT_URL?>?p=user&a=register">Register</a>
+                      </li>
+                  <?php else: ?>
+                      <li class="nav-item d-flex align-items-center">
+                          <span class="navbar-text me-3">
+                              <strong>Logged in as: <?= isset($_SESSION['name']) ? htmlspecialchars($_SESSION['name']) : 'User'; ?></strong>
+                          </span>
+                          <a class="nav-link" href="<?=ROOT_URL?>?p=admin&a=logout">Logout</a>
+                      </li>
+                  <?php endif; ?>
+              </ul>
+          </div>
+      </div>
+  </nav>
+  <div class="container mt-4">

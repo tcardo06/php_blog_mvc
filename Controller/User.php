@@ -6,7 +6,7 @@ class User extends Blog
 {
     public function register()
     {
-        if (isset($_POST['email'], $_POST['password'], $_POST['confirm_password']))
+        if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['confirm_password']))
         {
             if ($_POST['password'] !== $_POST['confirm_password']) {
                 $this->oUtil->sErrMsg = 'Passwords do not match!';
@@ -20,8 +20,9 @@ class User extends Blog
                 } else {
                     // Hash the password and create the user
                     $sHashPassword = password_hash($_POST['password'], PASSWORD_BCRYPT);
-                    $this->oModel->register($_POST['email'], $sHashPassword);
+                    $this->oModel->register($_POST['name'], $_POST['email'], $sHashPassword);
                     $_SESSION['is_logged'] = 1; // Log the user in
+                    $_SESSION['name'] = $_POST['name']; // Store the user's name
                     $_SESSION['role'] = 'user'; // Default role is 'user' for basic users
                     header('Location: ' . ROOT_URL . '?p=blog&a=all');
                     exit;
@@ -44,6 +45,7 @@ class User extends Blog
             {
                 // Set session values for login
                 $_SESSION['is_logged'] = 1;
+                $_SESSION['name'] = $oUser->name; // Store user's name in the session
                 $_SESSION['role'] = $oUser->role; // 'admin' or 'user'
 
                 // Redirect based on user role

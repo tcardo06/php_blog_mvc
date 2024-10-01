@@ -7,6 +7,11 @@
             <h2 class="text-center mb-4">Register</h2>
 
             <div class="mb-3">
+                <label for="name" class="form-label">Name:</label>
+                <input type="text" name="name" id="name" class="form-control" required="required" />
+            </div>
+
+            <div class="mb-3">
                 <label for="email" class="form-label">Email:</label>
                 <input type="email" name="email" id="email" class="form-control" required="required" />
             </div>

@@ -12,9 +12,10 @@ class User extends Blog
         return $oStmt->fetch(\PDO::FETCH_OBJ);
     }
 
-    public function register($sEmail, $sPassword)
+    public function register($sName, $sEmail, $sPassword)
     {
-        $oStmt = $this->oDb->prepare('INSERT INTO users (email, password) VALUES (:email, :password)');
+        $oStmt = $this->oDb->prepare('INSERT INTO users (name, email, password) VALUES (:name, :email, :password)');
+        $oStmt->bindValue(':name', $sName, \PDO::PARAM_STR);
         $oStmt->bindValue(':email', $sEmail, \PDO::PARAM_STR);
         $oStmt->bindValue(':password', $sPassword, \PDO::PARAM_STR);
         $oStmt->execute();
@@ -22,7 +23,7 @@ class User extends Blog
 
     public function login($sEmail)
     {
-        $oStmt = $this->oDb->prepare('SELECT email, password, role FROM users WHERE email = :email LIMIT 1');
+        $oStmt = $this->oDb->prepare('SELECT name, email, password, role FROM users WHERE email = :email LIMIT 1');
         $oStmt->bindValue(':email', $sEmail, \PDO::PARAM_STR);
         $oStmt->execute();
         return $oStmt->fetch(\PDO::FETCH_OBJ);
