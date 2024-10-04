@@ -55,4 +55,32 @@ class Blog
         $oStmt->bindParam(':postId', $iId, \PDO::PARAM_INT);
         return $oStmt->execute();
     }
+
+    // Get approved comments for a specific post
+    public function getApprovedComments($iPostId)
+    {
+        $oStmt = $this->oDb->prepare('SELECT * FROM comments WHERE post_id = :post_id AND status = "approved" ORDER BY created_at ASC');
+        $oStmt->bindParam(':post_id', $iPostId, \PDO::PARAM_INT);
+        $oStmt->execute();
+        return $oStmt->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    // Add a new comment (with status as 'pending')
+    public function addComment($aData)
+    {
+        $oStmt = $this->oDb->prepare('INSERT INTO comments (post_id, user_id, comment, status, created_at) VALUES (:post_id, :user_id, :comment, :status, NOW())');
+        $oStmt->bindValue(':post_id', $aData['post_id'], \PDO::PARAM_INT);
+        $oStmt->bindValue(':user_id', $aData['user_id'], \PDO::PARAM_INT);
+        $oStmt->bindValue(':comment', $aData['comment']);
+        $oStmt->bindValue(':status', $aData['status']);
+
+        // Debugging to check if the query executed successfully
+        if ($oStmt->execute()) {
+            echo "Comment successfully inserted.";
+        } else {
+            echo "Failed to insert comment.";
+            print_r($oStmt->errorInfo()); // Display any database error
+        }
+        exit(); // Stop execution to inspect the output
+    }
 }

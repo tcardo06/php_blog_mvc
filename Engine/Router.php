@@ -9,7 +9,7 @@ class Router
         $sNamespace = 'TestProject\Controller\\';
         $sDefCtrl = $sNamespace . 'Home'; // Default to Home controller
         $sCtrlPath = ROOT_PATH . 'Controller/';
-        
+
         // Default to 'home' if no 'p' parameter (controller) is provided
         $sCtrl = !empty($aParams['ctrl']) ? ucfirst($aParams['ctrl']) : 'Home';
 
