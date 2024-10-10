@@ -36,11 +36,13 @@ class Blog
 
     public function post()
     {
-        $this->oUtil->oPost = $this->oModel->getById($this->_iId); // Get the data of the post
-        $this->oUtil->oComments = $this->oModel->getApprovedComments($this->_iId); // Get approved comments
+        $this->oUtil->oPost = $this->oModel->getById($this->_iId);
+        $this->oUtil->oComments = $this->oModel->getApprovedComments($this->_iId);
+        $this->oUtil->oTags = $this->oModel->getTagsByPostId($this->_iId);
 
         $this->oUtil->getView('post');
     }
+
 
     // Handle comment submission
     public function comment()
@@ -130,14 +132,22 @@ class Blog
 
         if (!empty($_POST['add_submit']))
         {
-            if (isset($_POST['title'], $_POST['body']) && mb_strlen($_POST['title']) <= 50) // Allow a maximum of 50 characters
+            if (isset($_POST['title'], $_POST['body'], $_POST['preview']) && mb_strlen($_POST['title']) <= 255)
             {
-                $aData = array('title' => $_POST['title'], 'body' => $_POST['body'], 'created_date' => date('Y-m-d H:i:s'));
+                $aData = array(
+                    'title' => $_POST['title'],
+                    'body' => $_POST['body'],
+                    'preview' => $_POST['preview'],
+                    'created_date' => date('Y-m-d H:i:s')
+                );
 
-                if ($this->oModel->add($aData))
+                $tagIds = $_POST['tags'] ?? [];
+
+                if ($this->oModel->add($aData, $tagIds)) {
                     $this->oUtil->sSuccMsg = 'Hurray!! The post has been added.';
-                else
+                } else {
                     $this->oUtil->sErrMsg = 'Whoops! An error has occurred! Please try again later.';
+                }
             }
             else
             {
@@ -145,6 +155,8 @@ class Blog
             }
         }
 
+        // Fetch all tags from the database
+        $this->oUtil->oTags = $this->oModel->getAllTags();
         $this->oUtil->getView('add_post');
     }
 
@@ -155,25 +167,36 @@ class Blog
             exit;
         }
 
-        if (!empty($_POST['edit_submit']))
-        {
-            if (isset($_POST['title'], $_POST['body']))
-            {
-                $aData = array('post_id' => $this->_iId, 'title' => $_POST['title'], 'body' => $_POST['body']);
+        if (!empty($_POST['edit_submit'])) {
+            if (isset($_POST['title'], $_POST['body'], $_POST['preview'])) {
+                $aData = array(
+                    'post_id' => $this->_iId,
+                    'title' => $_POST['title'],
+                    'body' => $_POST['body'],
+                    'preview' => $_POST['preview']
+                );
 
-                if ($this->oModel->update($aData))
-                    $this->oUtil->sSuccMsg = 'Hurray! The post has been updated.';
-                else
-                    $this->oUtil->sErrMsg = 'Whoops! An error has occurred! Please try again later';
-            }
-            else
-            {
-                $this->oUtil->sErrMsg = 'All fields are required.';
+                // Get selected tag IDs
+                $tagIds = $_POST['tags'] ?? [];
+
+                if ($this->oModel->update($aData, $tagIds)) {
+                    $_SESSION['message'] = 'Post updated successfully!';
+                } else {
+                    $_SESSION['error'] = 'Error updating post.';
+                }
+
+                // Redirect to avoid form resubmission
+                header('Location: ' . ROOT_URL . '?p=blog&a=edit&id=' . $this->_iId);
+                exit;
+            } else {
+                $_SESSION['error'] = 'All fields are required.';
             }
         }
 
-        /* Get the data of the post */
+        // Fetch the post and tags data for the form
         $this->oUtil->oPost = $this->oModel->getById($this->_iId);
+        $this->oUtil->oTags = $this->oModel->getAllTags();  // All available tags
+        $this->oUtil->oPost->tags = $this->oModel->getPostTags($this->_iId);  // Tags for this specific post
 
         $this->oUtil->getView('edit_post');
     }
