@@ -8,6 +8,9 @@ class Blog
 
     public function __construct()
     {
+      if (session_status() == PHP_SESSION_NONE) {
+          session_start();
+      }
         $this->oDb = new \TestProject\Engine\Db;
     }
 

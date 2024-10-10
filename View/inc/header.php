@@ -4,7 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 ?>
-<pre><?php print_r($_SESSION); ?></pre>
+<!-- <pre><?php print_r($_SESSION); ?></pre> -->
 
 
 <!DOCTYPE html>

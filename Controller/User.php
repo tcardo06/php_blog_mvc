@@ -39,20 +39,19 @@ class User extends Blog
             $this->oUtil->getModel('User');
             $this->oModel = new \TestProject\Model\User;
 
-            // Retrieve user details by email
             $oUser = $this->oModel->login($_POST['email']);
             if ($oUser && password_verify($_POST['password'], $oUser->password))
             {
-                // Set session values for login
                 $_SESSION['is_logged'] = 1;
+                $_SESSION['user_id'] = $oUser->id; // Store user_id in session
                 $_SESSION['name'] = $oUser->name; // Store user's name in the session
                 $_SESSION['role'] = $oUser->role; // 'admin' or 'user'
 
                 // Redirect based on user role
                 if ($oUser->role === 'admin') {
-                    header('Location: ' . ROOT_URL . '?p=admin&a=dashboard'); // Example for admin
+                    header('Location: ' . ROOT_URL . '?p=admin&a=dashboard');
                 } else {
-                    header('Location: ' . ROOT_URL . '?p=blog&a=all'); // Redirect basic user to blog
+                    header('Location: ' . ROOT_URL . '?p=blog&a=all');
                 }
                 exit;
             }
