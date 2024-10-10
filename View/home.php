@@ -1,13 +1,24 @@
 <?php require 'inc/header.php'; ?>
 
 <div class="container mt-5">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="text-center mb-4">
-                <img src="<?= ROOT_URL ?>assets/images/profile.png" alt="Your Profile Picture" class="img-fluid rounded-circle" width="200">
-            </div>
+    <!-- Section 1: Profile Picture and Introduction -->
+    <div class="row mb-5">
+        <div class="col-md-8 offset-md-2 text-center">
+            <!-- Profile Picture -->
+            <img src="<?= ROOT_URL ?>assets/images/profile.png" alt="Your Profile Picture" class="img-fluid rounded-circle mb-3" width="200">
+            <!-- Name -->
+            <h2>Thomas Cardoso</h2>
+            <!-- Introduction Text -->
+            <p class="lead">Trouvez la solution avec Thomas Cardoso, le développeur de confiance!</p>
+        </div>
+    </div>
 
-            <h1 class="text-center">À Propos de Moi</h1>
+    <hr class="my-4">
+
+    <!-- Section 2: About Me -->
+    <div class="row mb-5">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="text-center">À Propos de Moi</h2>
             <p class="text-center">
                 Ma passion pour l’informatique et les jeux vidéo m’a permis d’intégrer la Coding Factory. J’apprends à coder en plusieurs langages et à travailler avec la méthode Scrum. J’aime travailler en équipe, je suis curieux et organisé.
             </p>
@@ -16,9 +27,14 @@
             <div class="text-center mb-4">
                 <a href="<?= ROOT_URL ?>assets/documents/THOMAS_CARDOSO_DEVELOPPEUR_WEB.pdf" target="_blank" class="btn btn-outline-secondary">Télécharger mon CV</a>
             </div>
+        </div>
+    </div>
 
-            <hr>
+    <hr class="my-4">
 
+    <!-- Section 3: Contact Form -->
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
             <h2 class="text-center">Contactez-moi</h2>
             <form action="<?= ROOT_URL ?>?p=contact&amp;a=submit" method="post">
                 <div class="mb-3">
