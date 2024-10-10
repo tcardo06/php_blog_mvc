@@ -59,6 +59,15 @@ class Blog
         return $oStmt->execute();
     }
 
+    public function searchByName($searchQuery)
+    {
+        $sql = 'SELECT * FROM posts WHERE title LIKE :title ORDER BY createdDate DESC';
+        $oStmt = $this->oDb->prepare($sql);
+        $oStmt->execute([':title' => '%' . $searchQuery . '%']);
+
+        return $oStmt->fetchAll(\PDO::FETCH_OBJ);
+    }
+
     // Get approved comments for a specific post
     public function getApprovedComments($iPostId)
     {

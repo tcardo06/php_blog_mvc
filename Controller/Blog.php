@@ -85,6 +85,26 @@ class Blog
         // exit;
     }
 
+    public function manage()
+    {
+        if (!$this->isAdmin()) {
+            header('Location: ' . ROOT_URL);
+            exit;
+        }
+
+        $searchQuery = !empty($_GET['q']) ? trim($_GET['q']) : '';
+        $action = !empty($_GET['action']) ? $_GET['action'] : 'edit'; // Default to edit if no action is provided
+
+        // If there's a search query, get posts by name; otherwise, get all posts
+        if ($searchQuery) {
+            $this->oUtil->oPosts = $this->oModel->searchByName($searchQuery);
+        } else {
+            $this->oUtil->oPosts = $this->oModel->getAll();
+        }
+
+        $this->oUtil->action = $action; // Pass the action to the view
+        $this->oUtil->getView('post_list');
+    }
 
     public function notFound()
     {
@@ -165,10 +185,13 @@ class Blog
             exit;
         }
 
-        if (!empty($_POST['delete']) && $this->oModel->delete($this->_iId))
+        $postId = (int) (!empty($_GET['id']) ? $_GET['id'] : 0); // Capture the post ID from the URL
+
+        if (!empty($_POST['delete']) && $postId > 0 && $this->oModel->delete($postId)) {
             header('Location: ' . ROOT_URL);
-        else
+        } else {
             exit('Whoops! Post cannot be deleted.');
+        }
     }
 
     protected function isLogged()
