@@ -30,9 +30,9 @@ class Blog
     public function index()
     {
         $this->oUtil->oPosts = $this->oModel->get(0, self::MAX_POSTS); // Get only the latest X posts
-
-        $this->oUtil->getView('index');
+        $this->oUtil->getView('blog');
     }
+
 
     public function post()
     {
