@@ -4,27 +4,27 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="fr" dir="ltr">
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <style>
-      /* Add styles for the social media icons */
+      /* Styles for social media icons */
       .social-icon {
-          font-size: 24px; /* Increase icon size */
+          font-size: 24px;
           color: #333; /* Default color for icons */
       }
       .social-icon:hover {
-          color: #000; /* Darker color on hover */
+          color: #007bff;
       }
       .social-icon-link {
-          text-decoration: none; /* Remove underline */
+          text-decoration: none;
       }
     </style>
   </head>
   <body>
-      <footer>
-          <p class="italic">
+      <footer class="mt-5">
+          <p class="italic text-center">
               <!-- GitHub and LinkedIn icons with Bootstrap Icons -->
               <a href="https://github.com/tcardo06/php_blog_mvc" target="_blank" title="GitHub" class="me-3 social-icon-link">
                   <i class="bi bi-github social-icon"></i>
@@ -36,14 +36,14 @@ if (session_status() == PHP_SESSION_NONE) {
               <?php if (!empty($_SESSION['is_logged'])): ?>
                   <?php if ($_SESSION['role'] === 'admin'): ?>
                       <!-- Only display for admin users -->
-                      You are connected as Admin - <a href="<?=ROOT_URL?>?p=admin&amp;a=logout">Logout</a> &nbsp; | &nbsp;
-                      <a href="<?=ROOT_URL?>?p=admin&amp;a=dashboard">Dashboard</a>
+                      Connecté en tant qu'Admin - <a href="<?=ROOT_URL?>?p=admin&amp;a=logout">Déconnexion</a> &nbsp; | &nbsp;
+                      <a href="<?=ROOT_URL?>?p=admin&amp;a=dashboard">Tableau de bord</a>
                   <?php else: ?>
                       <!-- For non-admin users -->
-                      You are connected as User - <a href="<?=ROOT_URL?>?p=admin&amp;a=logout">Logout</a>
+                      Connecté en tant qu'Utilisateur - <a href="<?=ROOT_URL?>?p=admin&amp;a=logout">Déconnexion</a>
                   <?php endif; ?>
               <?php else: ?>
-                  <a href="<?=ROOT_URL?>?p=user&amp;a=login">Login</a>
+                  <a href="<?=ROOT_URL?>?p=user&amp;a=login">Connexion</a>
               <?php endif; ?>
           </p>
       </footer>
