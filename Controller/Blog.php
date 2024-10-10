@@ -11,9 +11,9 @@ class Blog
 
     public function __construct()
     {
-      if (session_status() == PHP_SESSION_NONE) {
-          session_start();
-      }
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
         $this->oUtil = new \TestProject\Engine\Util;
 
@@ -43,18 +43,11 @@ class Blog
         $this->oUtil->getView('post');
     }
 
-
     // Handle comment submission
     public function comment()
     {
         // Check if the user is logged in and form data exists
         if (!empty($_POST['submit_comment']) && !empty($_POST['comment']) && !empty($_SESSION['is_logged'])) {
-            // Debugging to check if form data is received
-            echo "<pre>";
-            print_r($_POST);
-            print_r($_SESSION);
-            echo "</pre>";
-
             // Ensure the post ID exists
             if ($this->_iId > 0) {
                 $commentData = [
@@ -64,27 +57,17 @@ class Blog
                     'status' => 'pending',
                 ];
 
-                // Debugging to check the data before inserting
-                echo "<pre>";
-                print_r($commentData);
-                echo "</pre>";
-
                 // Insert the comment
                 $this->oModel->addComment($commentData);
 
-                // Debugging: Don't redirect for now to see results
-                echo "Comment insertion attempted.";
+                echo "Tentative d'insertion de commentaire.";
                 exit; // Stop further execution
             } else {
-                echo 'Invalid post ID.';
+                echo 'ID de post invalide.';
             }
         } else {
-            echo 'Please log in to submit a comment or fill in the comment text.';
+            echo 'Veuillez vous connecter pour soumettre un commentaire ou remplir le texte du commentaire.';
         }
-
-        // Comment out redirection for debugging
-        // header('Location: ' . ROOT_URL . '?p=blog&a=post&id=' . $this->_iId);
-        // exit;
     }
 
     public function manage()
@@ -144,14 +127,14 @@ class Blog
                 $tagIds = $_POST['tags'] ?? [];
 
                 if ($this->oModel->add($aData, $tagIds)) {
-                    $this->oUtil->sSuccMsg = 'Hurray!! The post has been added.';
+                    $_SESSION['message'] = 'Post ajouté avec succès!';
                 } else {
-                    $this->oUtil->sErrMsg = 'Whoops! An error has occurred! Please try again later.';
+                    $_SESSION['error'] = 'Une erreur est survenue lors de l\'ajout du post. Veuillez réessayer plus tard.';
                 }
             }
             else
             {
-                $this->oUtil->sErrMsg = 'All fields are required and the title cannot exceed 50 characters.';
+                $_SESSION['error'] = 'Tous les champs sont obligatoires et le titre ne peut pas dépasser 255 caractères.';
             }
         }
 
@@ -180,23 +163,23 @@ class Blog
                 $tagIds = $_POST['tags'] ?? [];
 
                 if ($this->oModel->update($aData, $tagIds)) {
-                    $_SESSION['message'] = 'Post updated successfully!';
+                    $_SESSION['message'] = 'Post mis à jour avec succès!';
                 } else {
-                    $_SESSION['error'] = 'Error updating post.';
+                    $_SESSION['error'] = 'Erreur lors de la mise à jour du post.';
                 }
 
                 // Redirect to avoid form resubmission
                 header('Location: ' . ROOT_URL . '?p=blog&a=edit&id=' . $this->_iId);
                 exit;
             } else {
-                $_SESSION['error'] = 'All fields are required.';
+                $_SESSION['error'] = 'Tous les champs sont obligatoires.';
             }
         }
 
         // Fetch the post and tags data for the form
         $this->oUtil->oPost = $this->oModel->getById($this->_iId);
-        $this->oUtil->oTags = $this->oModel->getAllTags();  // All available tags
-        $this->oUtil->oPost->tags = $this->oModel->getPostTags($this->_iId);  // Tags for this specific post
+        $this->oUtil->oTags = $this->oModel->getAllTags();
+        $this->oUtil->oPost->tags = $this->oModel->getPostTags($this->_iId);
 
         $this->oUtil->getView('edit_post');
     }
@@ -210,11 +193,19 @@ class Blog
 
         $postId = (int) (!empty($_GET['id']) ? $_GET['id'] : 0); // Capture the post ID from the URL
 
-        if (!empty($_POST['delete']) && $postId > 0 && $this->oModel->delete($postId)) {
-            header('Location: ' . ROOT_URL);
+        if (!empty($_POST['delete']) && $postId > 0) {
+            if ($this->oModel->delete($postId)) {
+                $_SESSION['message'] = 'Post supprimé avec succès!';
+            } else {
+                $_SESSION['error'] = 'Erreur lors de la suppression du post.';
+            }
         } else {
-            exit('Whoops! Post cannot be deleted.');
+            $_SESSION['error'] = 'ID de post invalide ou aucune action de suppression détectée.';
         }
+
+        // Redirect back to the manage page to show the success or error message
+        header('Location: ' . ROOT_URL . '?p=blog&a=manage&action=delete');
+        exit;
     }
 
     protected function isLogged()
