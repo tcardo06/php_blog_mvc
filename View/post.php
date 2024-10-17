@@ -1,9 +1,19 @@
 <?php require 'inc/header.php' ?>
 
+<!-- Display Success or Error Messages -->
+<?php if (!empty($_SESSION['message'])): ?>
+    <div class="alert alert-success">
+        <?= $_SESSION['message']; unset($_SESSION['message']); // Clear the message ?>
+    </div>
+<?php elseif (!empty($_SESSION['error'])): ?>
+    <div class="alert alert-danger">
+        <?= $_SESSION['error']; unset($_SESSION['error']); // Clear the error ?>
+    </div>
+<?php endif; ?>
+
 <?php if (empty($this->oPost)): ?>
     <p class="alert alert-danger">Le post est introuvable !</p>
 <?php else: ?>
-
     <article class="mt-5 p-4 bg-white rounded shadow-sm">
         <!-- Post Title -->
         <h2 class="mb-2"><?=htmlspecialchars($this->oPost->title)?></h2>

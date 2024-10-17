@@ -45,28 +45,39 @@ class Blog
     // Handle comment submission
     public function comment()
     {
-        // Check if the user is logged in and form data exists
-        if (!empty($_POST['submit_comment']) && !empty($_POST['comment']) && !empty($_SESSION['is_logged'])) {
-            if ($this->_iId > 0) {
+        if (isset($_POST['submit_comment']) && isset($_POST['comment']) && !empty($_SESSION['is_logged'])) {
+            $this->oUtil->oPost = $this->oModel->getById($this->_iId);
+
+            // Check if the post exists
+            if (!empty($this->oUtil->oPost)) {
+                // Prepare the comment data
                 $commentData = [
                     'post_id' => $this->_iId,
                     'user_id' => $_SESSION['user_id'],
-                    'comment' => $_POST['comment'],
+                    'comment' => trim($_POST['comment']),
                     'status' => 'pending',
                 ];
 
-                $this->oModel->addComment($commentData);
-                header('Location: ' . ROOT_URL . '?p=blog&a=post&id=' . $this->_iId);
-                exit;
+                // Insert the comment into the database
+                if ($this->oModel->addComment($commentData)) {
+                    $_SESSION['message'] = 'Commentaire soumis avec succès, en attente de validation.';
+                    header('Location: ' . ROOT_URL . '?p=blog&a=post&id=' . $this->_iId);
+                    exit;
+                } else {
+                    $_SESSION['error'] = 'Une erreur est survenue lors de l\'ajout du commentaire. Veuillez réessayer.';
+                }
             } else {
-                $_SESSION['error'] = 'Invalid post ID.';
+                $_SESSION['error'] = 'Le post est introuvable !';
+                header('Location: ' . ROOT_URL . '?p=blog&a=all');
+                exit;
             }
         } else {
-            $_SESSION['error'] = 'Please log in to submit a comment.';
+            $_SESSION['error'] = 'Veuillez vous connecter pour soumettre un commentaire ou remplir le champ de commentaire.';
+            header('Location: ' . ROOT_URL . '?p=blog&a=post&id=' . $this->_iId);
+            exit;
         }
-
-        $this->oUtil->getView('post');
     }
+
 
     public function manage()
     {

@@ -231,13 +231,10 @@ class Blog
         $oStmt = $this->oDb->prepare('INSERT INTO comments (post_id, user_id, comment, status, created_at) VALUES (:post_id, :user_id, :comment, :status, NOW())');
         $oStmt->bindValue(':post_id', $aData['post_id'], \PDO::PARAM_INT);
         $oStmt->bindValue(':user_id', $aData['user_id'], \PDO::PARAM_INT);
-        $oStmt->bindValue(':comment', $aData['comment']);
-        $oStmt->bindValue(':status', $aData['status']);
+        $oStmt->bindValue(':comment', $aData['comment'], \PDO::PARAM_STR);
+        $oStmt->bindValue(':status', $aData['status'], \PDO::PARAM_STR);
 
-        if ($oStmt->execute()) {
-            return true;
-        } else {
-            return false;
-        }
+        return $oStmt->execute(); // Return whether the insertion was successful
     }
+
 }
