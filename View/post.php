@@ -1,19 +1,9 @@
 <?php require 'inc/header.php' ?>
 
-<!-- Display Success or Error Messages -->
-<?php if (!empty($_SESSION['message'])): ?>
-    <div class="alert alert-success">
-        <?= $_SESSION['message']; unset($_SESSION['message']); // Clear the message ?>
-    </div>
-<?php elseif (!empty($_SESSION['error'])): ?>
-    <div class="alert alert-danger">
-        <?= $_SESSION['error']; unset($_SESSION['error']); // Clear the error ?>
-    </div>
-<?php endif; ?>
-
 <?php if (empty($this->oPost)): ?>
     <p class="alert alert-danger">Le post est introuvable !</p>
 <?php else: ?>
+
     <article class="mt-5 p-4 bg-white rounded shadow-sm">
         <!-- Post Title -->
         <h2 class="mb-2"><?=htmlspecialchars($this->oPost->title)?></h2>
@@ -47,7 +37,7 @@
             <?php foreach ($this->oComments as $oComment): ?>
                 <div class="mb-4 p-3 border rounded bg-light">
                     <p><?=nl2br(htmlspecialchars($oComment->comment))?></p>
-                    <p class="text-muted small">Posté le <?=htmlspecialchars($oComment->created_at)?> par l'utilisateur ID <?=htmlspecialchars($oComment->user_id)?></p>
+                    <p class="text-muted small">Posté le <?=htmlspecialchars($oComment->created_at)?> par <?=htmlspecialchars($oComment->user_name)?></p>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>

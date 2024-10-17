@@ -29,14 +29,14 @@ class Blog
     // Homepage
     public function index()
     {
-        $this->oUtil->oPosts = $this->oModel->get(0, self::MAX_POSTS); // Get only the latest X posts
+        $this->oUtil->oPosts = $this->oModel->get(0, self::MAX_POSTS);
         $this->oUtil->getView('blog');
     }
 
     public function post()
     {
         $this->oUtil->oPost = $this->oModel->getById($this->_iId);
-        $this->oUtil->oComments = $this->oModel->getApprovedComments($this->_iId);
+        $this->oUtil->oComments = $this->oModel->getApprovedCommentsWithUsers($this->_iId);
         $this->oUtil->oTags = $this->oModel->getTagsByPostId($this->_iId);
 
         $this->oUtil->getView('post');
@@ -203,6 +203,56 @@ class Blog
 
         // Redirect back to the manage page
         header('Location: ' . ROOT_URL . '?p=blog&a=manage&action=delete');
+        exit;
+    }
+
+    public function manageComments()
+    {
+        if (!$this->isAdmin()) {
+            header('Location: ' . ROOT_URL);
+            exit;
+        }
+
+        // Get all comments with the associated post titles
+        $this->oUtil->oComments = $this->oModel->getAllCommentsWithPostTitles();
+        $this->oUtil->getView('manage_comments');
+    }
+
+    public function approveComment()
+    {
+        if (!$this->isAdmin()) {
+            header('Location: ' . ROOT_URL);
+            exit;
+        }
+
+        $commentId = (int) (!empty($_GET['id']) ? $_GET['id'] : 0);
+
+        if ($this->oModel->approveComment($commentId)) {
+            $_SESSION['message'] = 'Commentaire approuvé avec succès !';
+        } else {
+            $_SESSION['error'] = 'Erreur lors de l\'approbation du commentaire.';
+        }
+
+        header('Location: ' . ROOT_URL . '?p=blog&a=manageComments');
+        exit;
+    }
+
+    public function deleteComment()
+    {
+        if (!$this->isAdmin()) {
+            header('Location: ' . ROOT_URL);
+            exit;
+        }
+
+        $commentId = (int) (!empty($_GET['id']) ? $_GET['id'] : 0);
+
+        if ($this->oModel->deleteComment($commentId)) {
+            $_SESSION['message'] = 'Commentaire supprimé avec succès !';
+        } else {
+            $_SESSION['error'] = 'Erreur lors de la suppression du commentaire.';
+        }
+
+        header('Location: ' . ROOT_URL . '?p=blog&a=manageComments');
         exit;
     }
 

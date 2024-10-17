@@ -76,6 +76,19 @@ class Blog
         $this->updatedDate = $updatedDate;
     }
 
+    // Getter and Setter for Comments
+    private $commentData = [];
+
+    public function setCommentData($commentData)
+    {
+        $this->commentData = $commentData;
+    }
+
+    public function getCommentData()
+    {
+        return $this->commentData;
+    }
+
     // Get posts with pagination
     public function get($iOffset, $iLimit)
     {
@@ -235,6 +248,46 @@ class Blog
         $oStmt->bindValue(':status', $aData['status'], \PDO::PARAM_STR);
 
         return $oStmt->execute(); // Return whether the insertion was successful
+    }
+
+    public function getAllCommentsWithPostTitles()
+    {
+        $sql = 'SELECT c.id, c.comment, c.created_at, c.user_id, c.status, p.title AS post_title, p.id AS post_id
+                FROM comments c
+                JOIN posts p ON c.post_id = p.id
+                ORDER BY c.created_at DESC';
+        $oStmt = $this->oDb->query($sql);
+        return $oStmt->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    public function getApprovedCommentsWithUsers($postId)
+    {
+        $sql = 'SELECT c.id, c.comment, c.created_at, c.status, u.name AS user_name
+                FROM comments c
+                JOIN users u ON c.user_id = u.id
+                WHERE c.post_id = :postId AND c.status = "approved"
+                ORDER BY c.created_at ASC';
+        $oStmt = $this->oDb->prepare($sql);
+        $oStmt->bindValue(':postId', $postId, \PDO::PARAM_INT);
+        $oStmt->execute();
+        $comments = $oStmt->fetchAll(\PDO::FETCH_OBJ);
+
+        $this->setCommentData($comments);
+        return $this->getCommentData();
+    }
+
+    public function approveComment($commentId)
+    {
+        $oStmt = $this->oDb->prepare('UPDATE comments SET status = "approved" WHERE id = :commentId LIMIT 1');
+        $oStmt->bindValue(':commentId', $commentId, \PDO::PARAM_INT);
+        return $oStmt->execute();
+    }
+
+    public function deleteComment($commentId)
+    {
+        $oStmt = $this->oDb->prepare('DELETE FROM comments WHERE id = :commentId LIMIT 1');
+        $oStmt->bindValue(':commentId', $commentId, \PDO::PARAM_INT);
+        return $oStmt->execute();
     }
 
 }
