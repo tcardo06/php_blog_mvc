@@ -4,40 +4,37 @@ namespace TestProject\Controller;
 
 class Admin extends Blog
 {
-  public function login()
-  {
-      if ($this->isLogged())
-          header('Location: ' . ROOT_URL . '?p=blog&a=all');
+    public function login()
+    {
+        if ($this->isLogged()) {
+            header('Location: ' . ROOT_URL . '?p=blog&a=all');
+            exit;
+        }
 
-      if (isset($_POST['email'], $_POST['password']))
-      {
-          $this->oUtil->getModel('User');
-          $this->oModel = new \TestProject\Model\User;
+        if (isset($_POST['email'], $_POST['password'])) {
+            $this->oUtil->getModel('Admin');
+            $this->oModel = new \TestProject\Model\Admin;
 
-          $oUser = $this->oModel->login($_POST['email']);
-          if ($oUser && password_verify($_POST['password'], $oUser->password))
-          {
-              $_SESSION['is_logged'] = 1;
-              $_SESSION['user_id'] = $oUser->id; // Store user_id in session
-              $_SESSION['name'] = $oUser->name;
-              $_SESSION['role'] = $oUser->role;
+            // Attempt to login using the email
+            $storedPasswordHash = $this->oModel->login($_POST['email']);
+            if ($storedPasswordHash && password_verify($_POST['password'], $storedPasswordHash)) {
+                $_SESSION['is_logged'] = 1;
 
-              header('Location: ' . ROOT_URL . '?p=admin&a=dashboard');
-              exit;
-          }
-          else
-          {
-              $this->oUtil->sErrMsg = 'Incorrect Login!';
-          }
-      }
+                header('Location: ' . ROOT_URL . '?p=admin&a=dashboard');
+                exit;
+            } else {
+                $this->oUtil->sErrMsg = 'Incorrect Login!';
+            }
+        }
 
-      $this->oUtil->getView('login');
-  }
+        $this->oUtil->getView('login');
+    }
 
     public function logout()
     {
-        if (!isset($_SESSION['is_logged']))
+        if (!isset($_SESSION['is_logged'])) {
             exit;
+        }
 
         if (!empty($_SESSION)) {
             $_SESSION = array();
