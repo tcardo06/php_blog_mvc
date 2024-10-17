@@ -36,6 +36,17 @@
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <h2 class="text-center">Contactez-moi</h2>
+
+            <?php if (!empty($_SESSION['message'])): ?>
+                <div class="alert alert-success">
+                    <?= $_SESSION['message']; unset($_SESSION['message']); ?>
+                </div>
+            <?php elseif (!empty($_SESSION['error'])): ?>
+                <div class="alert alert-danger">
+                    <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+                </div>
+            <?php endif; ?>
+
             <form action="<?= ROOT_URL ?>?p=contact&amp;a=submit" method="post">
                 <div class="mb-3">
                     <label for="name" class="form-label">Nom</label>
