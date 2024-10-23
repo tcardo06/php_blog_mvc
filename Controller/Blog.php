@@ -70,7 +70,7 @@ class Blog
             } else {
                 // If the post is not found, set an error and redirect
                 $_SESSION['error'] = 'Le post est introuvable !';
-                header('Location: ' . ROOT_URL . '?p=blog&a=all');
+                header('Location: ' . ROOT_URL . '?p=blog');
                 return;
             }
         } else {

@@ -33,7 +33,7 @@ class User extends Blog
                   $_SESSION['name'] = $this->oModel->getName(); // Use the getter method for name
                   $_SESSION['role'] = 'user'; // Default role
 
-                  header('Location: ' . ROOT_URL . '?p=blog&a=all');
+                  header('Location: ' . ROOT_URL . '?p=blog');
                   return;
               }
           }
@@ -43,38 +43,47 @@ class User extends Blog
       $this->oUtil->getView('register');
   }
 
-    public function login()
-    {
-        if (isset($_POST['email'], $_POST['password'])) {
-            $this->oUtil->getModel('User');
-            $this->oModel = new \TestProject\Model\User;
+  public function login()
+  {
+      if (isset($_POST['email'], $_POST['password'])) {
+          $this->oUtil->getModel('User');
+          $this->oModel = new \TestProject\Model\User;
 
-            // Set the email in the model
-            $this->oModel->setEmail($_POST['email']);
+          // Set the email in the model
+          $this->oModel->setEmail($_POST['email']);
 
-            // Fetch the user
-            $oUser = $this->oModel->login();
+          // Fetch the user
+          $oUser = $this->oModel->login();
 
-            if ($oUser && password_verify($_POST['password'], $oUser->password)) {
-                // Set session variables
-                $_SESSION['is_logged'] = 1;
-                $_SESSION['user_id'] = $oUser->id;
-                $_SESSION['name'] = $oUser->name;
-                $_SESSION['role'] = $oUser->role;
+          if ($oUser && password_verify($_POST['password'], $oUser->password)) {
+              // Set session variables
+              $_SESSION['is_logged'] = 1;
+              $_SESSION['user_id'] = $oUser->id;
+              $_SESSION['name'] = $oUser->name;
+              $_SESSION['role'] = $oUser->role;
 
-                // Redirect based on role
-                if ($oUser->role === 'admin') {
-                    header('Location: ' . ROOT_URL . '?p=admin&a=dashboard');
-                } else {
-                    header('Location: ' . ROOT_URL . '?p=blog&a=all');
-                }
-                exit;
-            } else {
-                $this->oUtil->sErrMsg = 'Incorrect Email or Password!';
-            }
-        }
+              // Redirect based on role
+              try {
+                  if ($oUser->role === 'admin') {
+                      $this->redirect(ROOT_URL . '?p=admin&a=dashboard');
+                  } else {
+                      $this->redirect(ROOT_URL . '?p=blog');
+                  }
+              } catch (\Exception $e) {
+                  $this->oUtil->sErrMsg = $e->getMessage();
+              }
+          } else {
+              $this->oUtil->sErrMsg = 'Incorrect Email or Password!';
+          }
+      }
 
-        // Load the login view
-        $this->oUtil->getView('login');
-    }
+      // Load the login view
+      $this->oUtil->getView('login');
+  }
+
+  private function redirect($url)
+  {
+      header('Location: ' . $url);
+      throw new \Exception('Redirection to ' . $url);
+  }
 }

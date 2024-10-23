@@ -7,7 +7,7 @@ class Admin extends Blog
   public function login()
   {
       if ($this->isLogged()) {
-          header('Location: ' . ROOT_URL . '?p=blog&a=all');
+          header('Location: ' . ROOT_URL . '?p=blog');
           return;
       }
 
