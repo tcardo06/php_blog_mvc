@@ -28,12 +28,12 @@ class Admin extends Blog
       }
 
       $this->oUtil->getView('login');
-  }
+    }
 
     public function logout()
     {
         if (!isset($_SESSION['is_logged'])) {
-            exit;
+            return;
         }
 
         if (!empty($_SESSION)) {
@@ -43,7 +43,7 @@ class Admin extends Blog
         }
 
         header('Location: ' . ROOT_URL);
-        exit;
+        return;
     }
 
     public function dashboard()
@@ -51,7 +51,7 @@ class Admin extends Blog
         // Check if the user is logged in and is an admin
         if (!isset($_SESSION['is_logged']) || $_SESSION['role'] !== 'admin') {
             header('Location: ' . ROOT_URL); // Redirect non-admins to the home page
-            exit;
+            return;
         }
 
         $this->oUtil->getView('dashboard');
