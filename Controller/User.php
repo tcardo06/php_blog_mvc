@@ -73,7 +73,7 @@ class User extends Blog
                   $this->oUtil->sErrMsg = $e->getMessage();
               }
           } else {
-              $this->oUtil->sErrMsg = 'Incorrect Email or Password!';
+              $this->oUtil->sErrMsg = 'Email ou mot de passe incorrect!';
           }
       }
 
