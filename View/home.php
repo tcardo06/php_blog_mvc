@@ -47,7 +47,7 @@
                 </div>
             <?php endif; ?>
 
-            <form action="<?= ROOT_URL ?>?p=contact&amp;a=submit" method="post">
+            <form action="<?= ROOT_URL ?>?p=contact&a=submit" method="post">
                 <div class="mb-3">
                     <label for="name" class="form-label">Nom</label>
                     <input type="text" class="form-control" id="name" name="name" required>
