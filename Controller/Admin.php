@@ -4,31 +4,31 @@ namespace TestProject\Controller;
 
 class Admin extends Blog
 {
-    public function login()
-    {
-        if ($this->isLogged()) {
-            header('Location: ' . ROOT_URL . '?p=blog&a=all');
-            exit;
-        }
+  public function login()
+  {
+      if ($this->isLogged()) {
+          header('Location: ' . ROOT_URL . '?p=blog&a=all');
+          return;
+      }
 
-        if (isset($_POST['email'], $_POST['password'])) {
-            $this->oUtil->getModel('Admin');
-            $this->oModel = new \TestProject\Model\Admin;
+      if (isset($_POST['email'], $_POST['password'])) {
+          $this->oUtil->getModel('Admin');
+          $this->oModel = new \TestProject\Model\Admin;
 
-            // Attempt to login using the email
-            $storedPasswordHash = $this->oModel->login($_POST['email']);
-            if ($storedPasswordHash && password_verify($_POST['password'], $storedPasswordHash)) {
-                $_SESSION['is_logged'] = 1;
+          // Attempt to login using the email
+          $storedPasswordHash = $this->oModel->login($_POST['email']);
+          if ($storedPasswordHash && password_verify($_POST['password'], $storedPasswordHash)) {
+              $_SESSION['is_logged'] = 1;
 
-                header('Location: ' . ROOT_URL . '?p=admin&a=dashboard');
-                exit;
-            } else {
-                $this->oUtil->sErrMsg = 'Incorrect Login!';
-            }
-        }
+              header('Location: ' . ROOT_URL . '?p=admin&a=dashboard');
+              return;
+          } else {
+              $this->oUtil->sErrMsg = 'Incorrect Login!';
+          }
+      }
 
-        $this->oUtil->getView('login');
-    }
+      $this->oUtil->getView('login');
+  }
 
     public function logout()
     {
