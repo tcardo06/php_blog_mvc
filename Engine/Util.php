@@ -17,10 +17,11 @@ class Util
     private function get($sFileName, $sType)
     {
         $sFullPath = ROOT_PATH . $sType . '/' . $sFileName . '.php';
-        if (is_file($sFullPath))
+        if (is_file($sFullPath)) {
             require $sFullPath;
-        else
-            exit('The "' . $sFullPath . '" file doesn\'t exist');
+        } else {
+            throw new \Exception('The "' . $sFullPath . '" file doesn\'t exist');
+        }
     }
 
     /**
