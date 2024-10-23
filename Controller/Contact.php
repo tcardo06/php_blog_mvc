@@ -68,7 +68,7 @@ class Contact
 
             // Redirect to the confirmation page with form data as query parameters
             header('Location: ' . ROOT_URL . '?p=contact&a=confirmation&name=' . urlencode($this->getName()) . '&email=' . urlencode($this->getEmail()) . '&message=' . urlencode($this->getMessage()));
-            exit;
+            return;
         }
     }
 

@@ -4,45 +4,44 @@ namespace TestProject\Controller;
 
 class User extends Blog
 {
-    public function register()
-    {
-        if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['confirm_password'])) {
-            if ($_POST['password'] !== $_POST['confirm_password']) {
-                $this->oUtil->sErrMsg = 'Passwords do not match!';
-            } else {
-                $this->oUtil->getModel('User');
-                $this->oModel = new \TestProject\Model\User;
+  public function register()
+  {
+      if (isset($_POST['name'], $_POST['email'], $_POST['password'], $_POST['confirm_password'])) {
+          if ($_POST['password'] !== $_POST['confirm_password']) {
+              $this->oUtil->sErrMsg = 'Passwords do not match!';
+          } else {
+              $this->oUtil->getModel('User');
+              $this->oModel = new \TestProject\Model\User;
 
-                // Set email
-                $this->oModel->setEmail($_POST['email']);
+              // Set email
+              $this->oModel->setEmail($_POST['email']);
 
-                // Check if the email is already registered
-                if ($this->oModel->isEmailRegistered()) {
-                    $this->oUtil->sErrMsg = 'Email already exists!';
-                } else {
-                    // Set name and password
-                    $this->oModel->setName($_POST['name']);
-                    $hashedPassword = password_hash($_POST['password'], PASSWORD_BCRYPT);
-                    $this->oModel->setPassword($hashedPassword);
+              // Check if the email is already registered
+              if ($this->oModel->isEmailRegistered()) {
+                  $this->oUtil->sErrMsg = 'Email already exists!';
+              } else {
+                  // Set name and password
+                  $this->oModel->setName($_POST['name']);
+                  $hashedPassword = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                  $this->oModel->setPassword($hashedPassword);
 
-                    // Register the user
-                    $this->oModel->register();
+                  // Register the user
+                  $this->oModel->register();
 
-                    // Log the user in and set session variables
-                    $_SESSION['is_logged'] = 1;
-                    $_SESSION['name'] = $this->oModel->getName(); // Use the getter method for name
-                    $_SESSION['role'] = 'user'; // Default role
+                  // Log the user in and set session variables
+                  $_SESSION['is_logged'] = 1;
+                  $_SESSION['name'] = $this->oModel->getName(); // Use the getter method for name
+                  $_SESSION['role'] = 'user'; // Default role
 
-                    // Redirect
-                    header('Location: ' . ROOT_URL . '?p=blog&a=all');
-                    exit;
-                }
-            }
-        }
+                  header('Location: ' . ROOT_URL . '?p=blog&a=all');
+                  return;
+              }
+          }
+      }
 
-        // Load the register view
-        $this->oUtil->getView('register');
-    }
+      // Load the register view
+      $this->oUtil->getView('register');
+  }
 
     public function login()
     {
