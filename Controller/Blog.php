@@ -45,7 +45,9 @@ class Blog
     // Handle comment submission
     public function comment()
     {
+        // Check if the comment form was submitted and if the user is logged in
         if (isset($_POST['submit_comment']) && isset($_POST['comment']) && !empty($_SESSION['is_logged'])) {
+            // Fetch the post based on the provided post ID
             $this->oUtil->oPost = $this->oModel->getById($this->_iId);
 
             // Check if the post exists
@@ -58,25 +60,29 @@ class Blog
                     'status' => 'pending',
                 ];
 
-                // Insert the comment into the database
+                // Try to insert the comment into the database
                 if ($this->oModel->addComment($commentData)) {
                     $_SESSION['message'] = 'Commentaire soumis avec succès, en attente de validation.';
-                    header('Location: ' . ROOT_URL . '?p=blog&a=post&id=' . $this->_iId);
-                    exit;
                 } else {
                     $_SESSION['error'] = 'Une erreur est survenue lors de l\'ajout du commentaire. Veuillez réessayer.';
                 }
+
             } else {
+                // If the post is not found, set an error and redirect
                 $_SESSION['error'] = 'Le post est introuvable !';
                 header('Location: ' . ROOT_URL . '?p=blog&a=all');
                 exit;
             }
         } else {
+            // If the user is not logged in or the comment is missing
             $_SESSION['error'] = 'Veuillez vous connecter pour soumettre un commentaire ou remplir le champ de commentaire.';
-            header('Location: ' . ROOT_URL . '?p=blog&a=post&id=' . $this->_iId);
-            exit;
         }
+
+        // Reload the same post page after processing the comment to display success or error messages
+        header('Location: ' . ROOT_URL . '?p=blog&a=post&id=' . $this->_iId);
+        exit;
     }
+
 
 
     public function manage()
