@@ -83,7 +83,7 @@ class Blog
 
             // Redirect back to the post
             header('Location: ' . ROOT_URL . '?p=blog&a=post&id=' . $postId);
-            exit;
+            return;
         }
     }
 
