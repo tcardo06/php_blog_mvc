@@ -6,15 +6,15 @@ class Util
 {
     public function getView($sViewName)
     {
-        $this->_get($sViewName, 'View');
+        $this->get($sViewName, 'View');
     }
 
     public function getModel($sModelName)
     {
-        $this->_get($sModelName, 'Model');
+        $this->get($sModelName, 'Model');
     }
 
-    private function _get($sFileName, $sType)
+    private function get($sFileName, $sType)
     {
         $sFullPath = ROOT_PATH . $sType . '/' . $sFileName . '.php';
         if (is_file($sFullPath))

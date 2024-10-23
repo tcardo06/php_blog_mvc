@@ -15,10 +15,10 @@ class Loader
     public function init()
     {
         // Register the loader method
-        spl_autoload_register(array(__CLASS__, '_loadClasses'));
+        spl_autoload_register(array(__CLASS__, 'loadClasses'));
     }
 
-    private function _loadClasses($sClass)
+    private function loadClasses($sClass)
     {
         // Remove namespace and backslash
         $sClass = str_replace(array(__NAMESPACE__, 'TestProject', '\\'), '/', $sClass);
