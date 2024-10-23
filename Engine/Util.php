@@ -14,9 +14,6 @@ class Util
         $this->_get($sModelName, 'Model');
     }
 
-    /**
-     * This method is useful in order to avoid the duplication of code (create almost the same method for "getView" and "getModel"
-     */
     private function _get($sFileName, $sType)
     {
         $sFullPath = ROOT_PATH . $sType . '/' . $sFileName . '.php';

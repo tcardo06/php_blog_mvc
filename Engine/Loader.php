@@ -4,13 +4,13 @@ namespace TestProject\Engine;
 
 use TestProject\Engine\Pattern\Singleton;
 
-// First, include necessary Pattern classes
+// Include necessary Pattern classes
 require_once __DIR__ . '/Pattern/Base.trait.php';
 require_once __DIR__ . '/Pattern/Singleton.trait.php';
 
 class Loader
 {
-    use Singleton; // Thanks Trait feature of PHP 5.4, I don't duplicate pattern code
+    use Singleton;
 
     public function init()
     {
