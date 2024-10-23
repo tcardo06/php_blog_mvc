@@ -45,42 +45,46 @@ class Blog
     // Handle comment submission
     public function comment()
     {
-        // Check if the comment form was submitted and if the user is logged in
-        if (isset($_POST['submit_comment']) && isset($_POST['comment']) && !empty($_SESSION['is_logged'])) {
-            // Fetch the post based on the provided post ID
-            $this->oUtil->oPost = $this->oModel->getById($this->_iId);
+        if (isset($_POST['submit_comment'])) {
+            // Check if the comment and post ID are present in the form submission
+            if (!empty($_POST['comment']) && !empty($_GET['id'])) {
 
-            // Check if the post exists
-            if (!empty($this->oUtil->oPost)) {
-                // Prepare the comment data
-                $commentData = [
-                    'post_id' => $this->_iId,
-                    'user_id' => $_SESSION['user_id'],
-                    'comment' => trim($_POST['comment']),
-                    'status' => 'pending',
-                ];
+                // Sanitize the comment input
+                $comment = htmlspecialchars(trim($_POST['comment']), ENT_QUOTES, 'UTF-8');
+                $postId = (int) $_GET['id']; // Sanitize post ID as an integer
 
-                // Try to insert the comment into the database
-                if ($this->oModel->addComment($commentData)) {
-                    $_SESSION['message'] = 'Commentaire soumis avec succès, en attente de validation.';
+                // Ensure the user is logged in (security measure)
+                if (isset($_SESSION['user_id'])) {
+                    $userId = (int) $_SESSION['user_id']; // Sanitize user ID as integer
+
+                    // Prepare comment data
+                    $commentData = [
+                        'post_id' => $postId,
+                        'user_id' => $userId,
+                        'comment' => $comment,
+                        'status' => 'pending', // Set status as pending for admin approval
+                    ];
+
+                    // Save the comment to the database
+                    $result = $this->oModel->addComment($commentData);
+
+                    if ($result) {
+                        $_SESSION['message'] = 'Votre commentaire a été soumis avec succès. Il sera publié après approbation.';
+                    } else {
+                        $_SESSION['error'] = 'Une erreur est survenue lors de l\'envoi du commentaire.';
+                    }
                 } else {
-                    $_SESSION['error'] = 'Une erreur est survenue lors de l\'ajout du commentaire. Veuillez réessayer.';
+                    $_SESSION['error'] = 'Vous devez être connecté pour soumettre un commentaire.';
                 }
 
             } else {
-                // If the post is not found, set an error and redirect
-                $_SESSION['error'] = 'Le post est introuvable !';
-                header('Location: ' . ROOT_URL . '?p=blog');
-                return;
+                $_SESSION['error'] = 'Le commentaire ne peut pas être vide.';
             }
-        } else {
-            // If the user is not logged in or the comment is missing
-            $_SESSION['error'] = 'Veuillez vous connecter pour soumettre un commentaire ou remplir le champ de commentaire.';
-        }
 
-        // Reload the same post page after processing the comment to display success or error messages
-        header('Location: ' . ROOT_URL . '?p=blog&a=post&id=' . $this->_iId);
-        return;
+            // Redirect back to the post
+            header('Location: ' . ROOT_URL . '?p=blog&a=post&id=' . $postId);
+            exit;
+        }
     }
 
     public function manage()

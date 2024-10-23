@@ -241,7 +241,10 @@ class Blog
     // Add a new comment with status 'pending'
     public function addComment($aData)
     {
+        // Use prepared statements to avoid SQL injection
         $oStmt = $this->oDb->prepare('INSERT INTO comments (post_id, user_id, comment, status, created_at) VALUES (:post_id, :user_id, :comment, :status, NOW())');
+
+        // Bind the values safely
         $oStmt->bindValue(':post_id', $aData['post_id'], \PDO::PARAM_INT);
         $oStmt->bindValue(':user_id', $aData['user_id'], \PDO::PARAM_INT);
         $oStmt->bindValue(':comment', $aData['comment'], \PDO::PARAM_STR);

@@ -21,16 +21,16 @@
 
         <!-- Post Date (Check if the post was updated) -->
         <?php if (!empty($this->oPost->updatedDate)): ?>
-            <p class="text-muted mb-4">Mis à jour le <?= $this->oPost->updatedDate ?></p>
+            <p class="text-muted mb-4">Mis à jour le <?= htmlspecialchars($this->oPost->updatedDate, ENT_QUOTES, 'UTF-8') ?></p>
         <?php else: ?>
-            <p class="text-muted mb-4">Publié le <?= $this->oPost->createdDate ?></p>
+            <p class="text-muted mb-4">Publié le <?= htmlspecialchars($this->oPost->createdDate, ENT_QUOTES, 'UTF-8') ?></p>
         <?php endif; ?>
 
         <!-- Display Tags -->
         <?php if (!empty($this->oTags)): ?>
             <div class="mb-4">
                 <?php foreach ($this->oTags as $oTag): ?>
-                    <span class="badge bg-secondary"><?= htmlspecialchars($oTag->name) ?></span>
+                    <span class="badge bg-secondary"><?= htmlspecialchars($oTag->name, ENT_QUOTES, 'UTF-8') ?></span>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
@@ -47,8 +47,8 @@
         <?php else: ?>
             <?php foreach ($this->oComments as $oComment): ?>
                 <div class="mb-4 p-3 border rounded bg-light">
-                    <p><?= nl2br(htmlspecialchars($oComment->comment)) ?></p>
-                    <p class="text-muted small">Posté le <?= htmlspecialchars($oComment->created_at) ?> par <?= htmlspecialchars($oComment->user_name) ?></p>
+                    <p><?= nl2br(htmlspecialchars($oComment->comment, ENT_QUOTES, 'UTF-8')) ?></p>
+                    <p class="text-muted small">Posté le <?= htmlspecialchars($oComment->created_at, ENT_QUOTES, 'UTF-8') ?> par <?= htmlspecialchars($oComment->user_name, ENT_QUOTES, 'UTF-8') ?></p>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>

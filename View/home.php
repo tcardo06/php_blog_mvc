@@ -39,26 +39,26 @@
 
             <?php if (!empty($_SESSION['message'])): ?>
                 <div class="alert alert-success">
-                    <?= $_SESSION['message']; unset($_SESSION['message']); ?>
+                    <?= htmlspecialchars($_SESSION['message'], ENT_QUOTES, 'UTF-8'); unset($_SESSION['message']); ?>
                 </div>
             <?php elseif (!empty($_SESSION['error'])): ?>
                 <div class="alert alert-danger">
-                    <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+                    <?= htmlspecialchars($_SESSION['error'], ENT_QUOTES, 'UTF-8'); unset($_SESSION['error']); ?>
                 </div>
             <?php endif; ?>
 
             <form action="<?= ROOT_URL ?>?p=contact&a=submit" method="post">
                 <div class="mb-3">
                     <label for="name" class="form-label">Nom</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
+                    <input type="text" class="form-control" id="name" name="name" value="<?= isset($_POST['name']) ? htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8') : ''; ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Adresse Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                    <input type="email" class="form-control" id="email" name="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8') : ''; ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                    <textarea class="form-control" id="message" name="message" rows="4" required><?= isset($_POST['message']) ? htmlspecialchars($_POST['message'], ENT_QUOTES, 'UTF-8') : ''; ?></textarea>
                 </div>
 
                 <!-- Send Message button centered -->
