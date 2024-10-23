@@ -71,7 +71,7 @@ class Blog
                 // If the post is not found, set an error and redirect
                 $_SESSION['error'] = 'Le post est introuvable !';
                 header('Location: ' . ROOT_URL . '?p=blog&a=all');
-                exit;
+                return;
             }
         } else {
             // If the user is not logged in or the comment is missing
@@ -80,16 +80,14 @@ class Blog
 
         // Reload the same post page after processing the comment to display success or error messages
         header('Location: ' . ROOT_URL . '?p=blog&a=post&id=' . $this->_iId);
-        exit;
+        return;
     }
-
-
 
     public function manage()
     {
         if (!$this->isAdmin()) {
             header('Location: ' . ROOT_URL);
-            exit;
+            return;
         }
 
         $searchQuery = !empty($_GET['q']) ? trim($_GET['q']) : '';
@@ -101,7 +99,7 @@ class Blog
             $this->oUtil->oPosts = $this->oModel->getAll();
         }
 
-        $this->oUtil->action = $action; // Pass the action to the view
+        $this->oUtil->action = $action;
         $this->oUtil->getView('post_list');
     }
 
@@ -113,7 +111,9 @@ class Blog
     /***** For Admin (Back end) *****/
     public function all()
     {
-        if (!$this->isLogged()) exit;
+        if (!$this->isLogged()) {
+            return;
+        }
 
         $this->oUtil->oPosts = $this->oModel->getAll();
         $this->oUtil->getView('index');
@@ -123,7 +123,7 @@ class Blog
     {
         if (!$this->isAdmin()) {
             header('Location: ' . ROOT_URL);
-            exit;
+            return;
         }
 
         if (!empty($_POST['add_submit'])) {
@@ -155,7 +155,7 @@ class Blog
     {
         if (!$this->isAdmin()) {
             header('Location: ' . ROOT_URL);
-            exit;
+            return;
         }
 
         if (!empty($_POST['edit_submit'])) {
@@ -174,7 +174,7 @@ class Blog
 
                 // Redirect to avoid form resubmission
                 header('Location: ' . ROOT_URL . '?p=blog&a=edit&id=' . $this->_iId);
-                exit;
+                return;
             } else {
                 $_SESSION['error'] = 'Tous les champs sont obligatoires.';
             }
@@ -192,7 +192,7 @@ class Blog
     {
         if (!$this->isAdmin()) {
             header('Location: ' . ROOT_URL);
-            exit;
+            return;
         }
 
         $postId = (int) (!empty($_GET['id']) ? $_GET['id'] : 0);
@@ -209,14 +209,14 @@ class Blog
 
         // Redirect back to the manage page
         header('Location: ' . ROOT_URL . '?p=blog&a=manage&action=delete');
-        exit;
+        return;
     }
 
     public function manageComments()
     {
         if (!$this->isAdmin()) {
             header('Location: ' . ROOT_URL);
-            exit;
+            return;
         }
 
         // Get all comments with the associated post titles
@@ -228,7 +228,7 @@ class Blog
     {
         if (!$this->isAdmin()) {
             header('Location: ' . ROOT_URL);
-            exit;
+            return;
         }
 
         $commentId = (int) (!empty($_GET['id']) ? $_GET['id'] : 0);
@@ -240,14 +240,14 @@ class Blog
         }
 
         header('Location: ' . ROOT_URL . '?p=blog&a=manageComments');
-        exit;
+        return;
     }
 
     public function deleteComment()
     {
         if (!$this->isAdmin()) {
             header('Location: ' . ROOT_URL);
-            exit;
+            return;
         }
 
         $commentId = (int) (!empty($_GET['id']) ? $_GET['id'] : 0);
@@ -259,7 +259,7 @@ class Blog
         }
 
         header('Location: ' . ROOT_URL . '?p=blog&a=manageComments');
-        exit;
+        return;
     }
 
     protected function isLogged()
