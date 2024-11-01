@@ -4,7 +4,6 @@ namespace TestProject\Engine;
 
 final class Config
 {
-    // Database info (if you want to test the script, please edit the below constants with yours)
     const
     DB_HOST = 'localhost',
     DB_NAME = 'mymvcblog',
@@ -12,5 +11,5 @@ final class Config
     DB_PWD = '',
 
     // Title of the site
-    SITE_NAME = 'Blog PHP!';
+    SITE_NAME = 'Blog Thomas Cardoso';
 }

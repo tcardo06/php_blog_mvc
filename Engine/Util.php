@@ -6,24 +6,22 @@ class Util
 {
     public function getView($sViewName)
     {
-        $this->_get($sViewName, 'View');
+        $this->get($sViewName, 'View');
     }
 
     public function getModel($sModelName)
     {
-        $this->_get($sModelName, 'Model');
+        $this->get($sModelName, 'Model');
     }
 
-    /**
-     * This method is useful in order to avoid the duplication of code (create almost the same method for "getView" and "getModel"
-     */
-    private function _get($sFileName, $sType)
+    private function get($sFileName, $sType)
     {
         $sFullPath = ROOT_PATH . $sType . '/' . $sFileName . '.php';
-        if (is_file($sFullPath))
+        if (is_file($sFullPath)) {
             require $sFullPath;
-        else
-            exit('The "' . $sFullPath . '" file doesn\'t exist');
+        } else {
+            throw new \Exception('The "' . $sFullPath . '" file doesn\'t exist');
+        }
     }
 
     /**

@@ -1,0 +1,7 @@
+{
+  "name": "tcardo06/phpblogmvc",
+  "description": "A project that uses PHPMailer",
+  "require": {
+    "phpmailer/phpmailer": "^6.8"
+  }
+}
