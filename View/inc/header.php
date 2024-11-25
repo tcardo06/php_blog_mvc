@@ -10,6 +10,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <title><?=\TestProject\Engine\Config::SITE_NAME?></title>
     <meta name="author" content="Thomas" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="<?=ROOT_URL?>static/style.css" />
 </head>
 <body>
