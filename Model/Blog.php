@@ -10,6 +10,7 @@ class Blog
     private $title;
     private $body;
     private $preview;
+    private $authorId;
     private $createdDate;
     private $updatedDate;
 
@@ -76,6 +77,17 @@ class Blog
         $this->updatedDate = $updatedDate;
     }
 
+    // Getter and Setter for Author ID
+        public function getAuthorId()
+    {
+        return $this->authorId;
+    }
+
+    public function setAuthorId($authorId)
+    {
+        $this->authorId = $authorId;
+    }
+
     // Getter and Setter for Comments
     private $commentData = [];
 
@@ -109,11 +121,12 @@ class Blog
     // Add a new post
     public function add(array $tagIds = [])
     {
-        $oStmt = $this->oDb->prepare('INSERT INTO posts (title, body, preview, createdDate) VALUES(:title, :body, :preview, :created_date)');
+        $oStmt = $this->oDb->prepare('INSERT INTO posts (title, body, preview, createdDate, author_id) VALUES(:title, :body, :preview, :created_date, :author_id)');
         $oStmt->bindValue(':title', $this->getTitle(), \PDO::PARAM_STR);
         $oStmt->bindValue(':body', $this->getBody(), \PDO::PARAM_STR);
         $oStmt->bindValue(':preview', $this->getPreview(), \PDO::PARAM_STR);
         $oStmt->bindValue(':created_date', $this->getCreatedDate(), \PDO::PARAM_STR);
+        $oStmt->bindValue(':author_id', $this->getAuthorId(), \PDO::PARAM_INT);
 
         $result = $oStmt->execute();
 
@@ -128,7 +141,11 @@ class Blog
     // Get a post by its ID
     public function getById($iId)
     {
-        $oStmt = $this->oDb->prepare('SELECT * FROM Posts WHERE id = :postId LIMIT 1');
+        $sql = 'SELECT p.*, u.name AS author_name
+                FROM posts p
+                JOIN users u ON p.author_id = u.id
+                WHERE p.id = :postId LIMIT 1';
+        $oStmt = $this->oDb->prepare($sql);
         $oStmt->bindParam(':postId', $iId, \PDO::PARAM_INT);
         $oStmt->execute();
         return $oStmt->fetch(\PDO::FETCH_OBJ);
@@ -149,11 +166,12 @@ class Blog
     // Update a post and its tags
     public function update($postId, array $newTagIds = [])
     {
-        $oStmt = $this->oDb->prepare('UPDATE posts SET title = :title, body = :body, preview = :preview, updatedDate = NOW() WHERE id = :postId LIMIT 1');
+        $oStmt = $this->oDb->prepare('UPDATE posts SET title = :title, body = :body, preview = :preview, updatedDate = NOW(), author_id = :author_id WHERE id = :postId LIMIT 1');
         $oStmt->bindValue(':postId', $postId, \PDO::PARAM_INT);
         $oStmt->bindValue(':title', $this->getTitle(), \PDO::PARAM_STR);
         $oStmt->bindValue(':body', $this->getBody(), \PDO::PARAM_STR);
         $oStmt->bindValue(':preview', $this->getPreview(), \PDO::PARAM_STR);
+        $oStmt->bindValue(':author_id', $this->getAuthorId(), \PDO::PARAM_INT);
 
         $result = $oStmt->execute();
 
@@ -218,6 +236,16 @@ class Blog
         $oStmt->bindParam(':postId', $postId, \PDO::PARAM_INT);
         $oStmt->execute();
         return $oStmt->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    public function getPostsWithAuthors()
+    {
+        $sql = 'SELECT p.*, u.name AS author_name
+                FROM posts p
+                JOIN users u ON p.author_id = u.id
+                ORDER BY p.createdDate DESC';
+        $oStmt = $this->oDb->query($sql);
+        return $oStmt->fetchAll(\PDO::FETCH_OBJ);
     }
 
     // Search posts by title

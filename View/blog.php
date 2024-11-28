@@ -25,11 +25,15 @@
                             <p class="card-text flex-grow-1"><?=nl2br(htmlspecialchars(mb_strimwidth($oPost->preview, 0, 100, '...'))) ?></p>
 
                             <!-- Post Date (Check if the post was updated) -->
-                            <?php if (!empty($oPost->updatedDate) && $oPost->updatedDate !== '0000-00-00 00:00:00'): ?>
-                                <p class="text-muted small">Mis à jour le <?=$oPost->updatedDate?></p>
-                            <?php else: ?>
-                                <p class="text-muted small">Publié le <?=$oPost->createdDate?></p>
-                            <?php endif; ?>
+                            <p class="text-muted small">
+                                <?php if (!empty($oPost->updatedDate) && $oPost->updatedDate !== '0000-00-00 00:00:00'): ?>
+                                    Mis à jour le <?=htmlspecialchars($oPost->updatedDate)?>
+                                    par <?=htmlspecialchars($oPost->author_name)?>
+                                <?php else: ?>
+                                    Publié le <?=htmlspecialchars($oPost->createdDate)?>
+                                    par <?=htmlspecialchars($oPost->author_name)?>
+                                <?php endif; ?>
+                            </p>
 
                             <!-- 'See More' Button -->
                             <a href="<?=ROOT_URL?>?p=blog&amp;a=post&amp;id=<?=$oPost->id?>" class="btn btn-outline-primary mt-auto">Voir plus</a>

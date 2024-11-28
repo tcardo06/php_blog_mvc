@@ -19,12 +19,16 @@
         <!-- Post Title -->
         <h2 class="mb-2"><?= htmlspecialchars($this->oPost->title) ?></h2>
 
-        <!-- Post Date (Check if the post was updated) -->
-        <?php if (!empty($this->oPost->updatedDate)): ?>
-            <p class="text-muted mb-4">Mis à jour le <?= htmlspecialchars($this->oPost->updatedDate, ENT_QUOTES, 'UTF-8') ?></p>
-        <?php else: ?>
-            <p class="text-muted mb-4">Publié le <?= htmlspecialchars($this->oPost->createdDate, ENT_QUOTES, 'UTF-8') ?></p>
-        <?php endif; ?>
+        <!-- Post Date and Author -->
+        <p class="text-muted mb-4">
+            <?php if (!empty($this->oPost->updatedDate) && $this->oPost->updatedDate !== '0000-00-00 00:00:00'): ?>
+                Mis à jour le <?= htmlspecialchars($this->oPost->updatedDate, ENT_QUOTES, 'UTF-8') ?>
+                par <?= htmlspecialchars($this->oPost->author_name, ENT_QUOTES, 'UTF-8') ?>
+            <?php else: ?>
+                Publié le <?= htmlspecialchars($this->oPost->createdDate, ENT_QUOTES, 'UTF-8') ?>
+                par <?= htmlspecialchars($this->oPost->author_name, ENT_QUOTES, 'UTF-8') ?>
+            <?php endif; ?>
+        </p>
 
         <!-- Display Tags -->
         <?php if (!empty($this->oTags)): ?>

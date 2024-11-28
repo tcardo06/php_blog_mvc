@@ -29,7 +29,7 @@ class Blog
     // Homepage
     public function index()
     {
-        $this->oUtil->oPosts = $this->oModel->get(0, self::MAX_POSTS);
+        $this->oUtil->oPosts = $this->oModel->getPostsWithAuthors();
         $this->oUtil->getView('blog');
     }
 
@@ -138,6 +138,15 @@ class Blog
                 $this->oModel->setPreview($_POST['preview']);
                 $this->oModel->setCreatedDate(date('Y-m-d H:i:s'));
 
+                // Set the logged-in user as the author
+                if (isset($_SESSION['user_id'])) {
+                    $this->oModel->setAuthorId($_SESSION['user_id']);
+                } else {
+                    $_SESSION['error'] = 'Vous devez être connecté pour ajouter un post.';
+                    header('Location: ' . ROOT_URL);
+                    return;
+                }
+
                 $tagIds = $_POST['tags'] ?? [];
 
                 if ($this->oModel->add($tagIds)) {
@@ -167,6 +176,15 @@ class Blog
                 $this->oModel->setTitle($_POST['title']);
                 $this->oModel->setBody($_POST['body']);
                 $this->oModel->setPreview($_POST['preview']);
+
+                // Set the logged-in user as the author
+                if (isset($_SESSION['user_id'])) {
+                    $this->oModel->setAuthorId($_SESSION['user_id']);
+                } else {
+                    $_SESSION['error'] = 'Vous devez être connecté pour modifier un post.';
+                    header('Location: ' . ROOT_URL);
+                    return;
+                }
 
                 $tagIds = $_POST['tags'] ?? [];
 
