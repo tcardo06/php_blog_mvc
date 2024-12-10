@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.3
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 27 nov. 2024 à 08:12
--- Version du serveur : 10.4.24-MariaDB
--- Version de PHP : 7.4.28
+-- Généré le : mar. 10 déc. 2024 à 09:29
+-- Version du serveur : 10.4.22-MariaDB
+-- Version de PHP : 8.0.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -61,8 +61,8 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`id`, `post_id`, `user_id`, `comment`, `created_at`, `status`) VALUES
-(2, 19, 1, 'test', '2024-10-17 10:20:44', 'approved'),
-(6, 8, 2, 'Flutter j\'aime pas.', '2024-10-18 12:11:56', 'pending');
+(5, 21, 2, 'un très bon commentaire', '2024-10-17 10:34:25', 'approved'),
+(15, 9, 2, 'Ceci est un test', '2024-11-27 17:42:00', 'approved');
 
 -- --------------------------------------------------------
 
@@ -76,18 +76,19 @@ CREATE TABLE `posts` (
   `body` longtext NOT NULL,
   `createdDate` datetime NOT NULL DEFAULT current_timestamp(),
   `preview` text DEFAULT NULL,
-  `updatedDate` datetime DEFAULT NULL
+  `updatedDate` datetime DEFAULT NULL,
+  `author_id` int(10) UNSIGNED NOT NULL DEFAULT 2
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `posts`
 --
 
-INSERT INTO `posts` (`id`, `title`, `body`, `createdDate`, `preview`, `updatedDate`) VALUES
-(7, 'testtest', 'testzetzetzetztzetd', '2024-10-10 10:42:20', 'd', '2024-10-10 12:20:37'),
-(8, 'Pourquoi Flutter est devenu un choix populaire pour le développement multi-plateformes', 'Flutter, le framework de développement mobile de Google, gagne toujours plus rapidement en popularité pour le développement d\'applications multi-plateformes. Grâce à sa capacité à compiler en code natif pour Android et iOS, Flutter permet une expérience utilisateur fluide et cohérente sur les deux plateformes. Découvrez pourquoi les développeurs choisissent Flutter pour leurs projets mobiles en 2024.\n\nFlutter utilise le langage Dart, qui est simple à apprendre et puissant. Les développeurs apprécient la rapidité du framework et ses outils de débogage robustes. La communauté Flutter est en pleine croissance, offrant une multitude de plugins et de packages qui simplifient le développement.\n\nL\'un des points forts de Flutter est son rendu graphique performant grâce au moteur Skia, qui permet des animations fluides et des interfaces utilisateur réactives. De plus, la fonctionnalité de Hot Reload accélère le cycle de développement en permettant aux développeurs de voir instantanément les modifications apportées au code.\n\nFlutter n\'est pas seulement limité aux applications mobiles; il permet également le développement pour le web et le bureau, ce qui en fait un véritable framework multi-plateformes. Cette flexibilité, combinée à une forte adoption par des entreprises comme Alibaba et Google, renforce sa position comme un outil incontournable pour les développeurs en 2024.', '2024-10-10 10:55:27', 'Flutter, le framework de développement mobile de Google, gagne toujours plus rapidement en popularité.', '2024-10-10 11:21:41'),
-(9, 'Introduction à l\'apprentissage profond et ses applications', 'L\'apprentissage profond, une branche de l\'intelligence artificielle, révolutionne divers secteurs, allant de la reconnaissance vocale à la détection de maladies. Cet article fournit une introduction accessible à l\'apprentissage profond, expliquant ses principes de base et comment il est utilisé pour résoudre des problèmes complexes dans la vie réelle.\r\n\r\nL\'apprentissage profond utilise des réseaux de neurones artificiels inspirés du cerveau humain pour analyser et interpréter des données complexes. Ces réseaux, composés de couches de neurones interconnectés, peuvent apprendre à partir de grandes quantités de données et améliorer leurs performances au fil du temps.\r\n\r\nParmi les applications les plus impressionnantes de l\'apprentissage profond, on trouve la vision par ordinateur, qui permet aux machines de reconnaître des objets et des visages dans des images et des vidéos. La reconnaissance vocale, utilisée par des assistants virtuels comme Siri et Alexa, repose également sur ces technologies pour comprendre et répondre aux commandes vocales des utilisateurs.\r\n\r\nEn médecine, l\'apprentissage profond aide à diagnostiquer des maladies en analysant des images médicales comme des radiographies et des IRM. Il est également utilisé pour prédire des résultats cliniques et personnaliser les traitements pour les patients. D\'autres domaines, comme les véhicules autonomes et les systèmes de recommandation (Netflix, Amazon), bénéficient également de l\'apprentissage profond pour offrir des expériences utilisateur améliorées et plus sûres.', '2024-10-10 11:11:14', 'L\'apprentissage profond, une branche de l\'intelligence artificielle, révolutionne divers secteurs.', '2024-11-24 19:15:48'),
-(19, 'test', 'test', '2024-10-10 12:04:51', 'test', NULL);
+INSERT INTO `posts` (`id`, `title`, `body`, `createdDate`, `preview`, `updatedDate`, `author_id`) VALUES
+(7, 'testtest', 'testzetzetzetztzetd', '2024-10-10 10:42:20', 'd', '2024-10-10 12:20:37', 2),
+(8, 'Pourquoi Flutter est devenu un choix populaire pour le développement multi-plateformes', 'Flutter, le framework de développement mobile de Google, gagne toujours plus rapidement en popularité pour le développement d\'applications multi-plateformes. Grâce à sa capacité à compiler en code natif pour Android et iOS, Flutter permet une expérience utilisateur fluide et cohérente sur les deux plateformes. Découvrez pourquoi les développeurs choisissent Flutter pour leurs projets mobiles en 2024.\n\nFlutter utilise le langage Dart, qui est simple à apprendre et puissant. Les développeurs apprécient la rapidité du framework et ses outils de débogage robustes. La communauté Flutter est en pleine croissance, offrant une multitude de plugins et de packages qui simplifient le développement.\n\nL\'un des points forts de Flutter est son rendu graphique performant grâce au moteur Skia, qui permet des animations fluides et des interfaces utilisateur réactives. De plus, la fonctionnalité de Hot Reload accélère le cycle de développement en permettant aux développeurs de voir instantanément les modifications apportées au code.\n\nFlutter n\'est pas seulement limité aux applications mobiles; il permet également le développement pour le web et le bureau, ce qui en fait un véritable framework multi-plateformes. Cette flexibilité, combinée à une forte adoption par des entreprises comme Alibaba et Google, renforce sa position comme un outil incontournable pour les développeurs en 2024.', '2024-10-10 10:55:27', 'Flutter, le framework de développement mobile de Google, gagne toujours plus rapidement en popularité.', '2024-10-10 11:21:41', 2),
+(9, 'Introduction à l\'apprentissage profond et ses applications', 'L\'apprentissage profond, une branche de l\'intelligence artificielle, révolutionne divers secteurs, allant de la reconnaissance vocale à la détection de maladies. Cet article fournit une introduction accessible à l\'apprentissage profond, expliquant ses principes de base et comment il est utilisé pour résoudre des problèmes complexes dans la vie réelle.\r\n\r\nL\'apprentissage profond utilise des réseaux de neurones artificiels inspirés du cerveau humain pour analyser et interpréter des données complexes. Ces réseaux, composés de couches de neurones interconnectés, peuvent apprendre à partir de grandes quantités de données et améliorer leurs performances au fil du temps.\r\n\r\nParmi les applications les plus impressionnantes de l\'apprentissage profond, on trouve la vision par ordinateur, qui permet aux machines de reconnaître des objets et des visages dans des images et des vidéos. La reconnaissance vocale, utilisée par des assistants virtuels comme Siri et Alexa, repose également sur ces technologies pour comprendre et répondre aux commandes vocales des utilisateurs.\r\n\r\nEn médecine, l\'apprentissage profond aide à diagnostiquer des maladies en analysant des images médicales comme des radiographies et des IRM. Il est également utilisé pour prédire des résultats cliniques et personnaliser les traitements pour les patients. D\'autres domaines, comme les véhicules autonomes et les systèmes de recommandation (Netflix, Amazon), bénéficient également de l\'apprentissage profond pour offrir des expériences utilisateur améliorées et plus sûres.', '2024-10-10 11:11:14', 'L\'apprentissage profond, une branche de l\'intelligence artificielle, révolutionne divers secteurs.', '2024-10-10 11:43:38', 2),
+(21, 'sdf', 'sdf et oui', '2024-10-17 10:05:39', 'sdf', '2024-10-23 09:21:33', 2);
 
 -- --------------------------------------------------------
 
@@ -109,7 +110,8 @@ INSERT INTO `post_tags` (`post_id`, `tag_id`) VALUES
 (8, 5),
 (8, 6),
 (9, 7),
-(19, 7);
+(21, 5),
+(21, 7);
 
 -- --------------------------------------------------------
 
@@ -156,7 +158,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
 (1, 'test', 'test@gmail.com', '$2y$10$Z7Mr3ziJ5LF8.sGAuMpu2uNqe7iVZPEPWSphvfQ.rp/NKZY9y55ZO', 'user'),
 (2, 'tcardo06', 'tcardo06@gmail.com', '$2y$10$ut0Bla/xEfGbmm5vcuRFYeP.pAzAgA48Wf62ceDem0oh/Je6hyvUu', 'admin'),
-(3, 'Jane', 'jane@gmail.com', '$2y$10$2FqgpLNox0JNWTBVdEs7Puw7BhK03Jyj/mSw2c9ZDqvmsw8uazxcS', 'user');
+(3, 'Jane', 'jane@gmail.com', '$2y$10$2FqgpLNox0JNWTBVdEs7Puw7BhK03Jyj/mSw2c9ZDqvmsw8uazxcS', 'user'),
+(4, 'lampe', 'lampe@gmail.com', '$2y$10$Adw.TUujHJDGH24eCT1ECORc8o14A0BJwf5Tw4SKac0x87G1ZiDEi', 'user');
 
 --
 -- Index pour les tables déchargées
@@ -180,7 +183,8 @@ ALTER TABLE `comments`
 -- Index pour la table `posts`
 --
 ALTER TABLE `posts`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `posts_ibfk_1` (`author_id`);
 
 --
 -- Index pour la table `post_tags`
@@ -215,13 +219,13 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT pour la table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT pour la table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT pour la table `tags`
@@ -233,7 +237,7 @@ ALTER TABLE `tags`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Contraintes pour les tables déchargées
@@ -245,6 +249,12 @@ ALTER TABLE `users`
 ALTER TABLE `comments`
   ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `posts`
+--
+ALTER TABLE `posts`
+  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `post_tags`
