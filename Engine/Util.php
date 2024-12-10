@@ -4,6 +4,8 @@ namespace TestProject\Engine;
 
 class Util
 {
+    private array $properties = []; // Store dynamic properties
+
     public function getView($sViewName)
     {
         $this->get($sViewName, 'View');
@@ -25,12 +27,34 @@ class Util
     }
 
     /**
-     * Set variables for the template views.
-     *
-     * @return void
+     * Set a dynamic property.
      */
-    public function __set($sKey, $mVal)
+    public function __set(string $key, $value): void
     {
-        $this->$sKey = $mVal;
+        $this->properties[$key] = $value;
+    }
+
+    /**
+     * Get a dynamic property.
+     */
+    public function __get(string $key)
+    {
+        return $this->properties[$key] ?? null; // Return null if property does not exist
+    }
+
+    /**
+     * Check if a dynamic property is set.
+     */
+    public function __isset(string $key): bool
+    {
+        return isset($this->properties[$key]);
+    }
+
+    /**
+     * Unset a dynamic property.
+     */
+    public function __unset(string $key): void
+    {
+        unset($this->properties[$key]);
     }
 }
