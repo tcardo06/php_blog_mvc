@@ -2,31 +2,46 @@
 
 namespace TestProject\Engine;
 
-use TestProject\Engine\Pattern\Singleton;
-
-// Include necessary Pattern classes
-require_once __DIR__ . '/Pattern/Base.trait.php';
-require_once __DIR__ . '/Pattern/Singleton.trait.php';
-
 class Loader
 {
-    use Singleton;
+    private static $instance = null;
 
+    // Make constructor private to prevent instantiation
+    private function __construct() {}
+
+    // Prevent cloning of the instance
+    private function __clone() {}
+
+    // Public method to get the single instance of the class
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    // Initialize the loader
     public function init()
     {
         // Register the loader method
-        spl_autoload_register(array(__CLASS__, 'loadClasses'));
+        spl_autoload_register([$this, 'loadClasses']);
     }
 
+    // Autoload class files
     private function loadClasses($sClass)
     {
         // Remove namespace and backslash
-        $sClass = str_replace(array(__NAMESPACE__, 'TestProject', '\\'), '/', $sClass);
+        $sClass = str_replace(['\\', 'TestProject'], '/', $sClass);
 
-        if (is_file(__DIR__ . '/' . $sClass . '.php'))
+        // Check and require files from the current directory
+        if (is_file(__DIR__ . '/' . $sClass . '.php')) {
             require_once __DIR__ . '/' . $sClass . '.php';
+        }
 
-        if (is_file(ROOT_PATH . $sClass . '.php'))
+        // Check and require files from the root path
+        if (defined('ROOT_PATH') && is_file(ROOT_PATH . $sClass . '.php')) {
             require_once ROOT_PATH . $sClass . '.php';
+        }
     }
 }

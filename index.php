@@ -19,7 +19,10 @@ define('ROOT_PATH', __DIR__ . '/');
 
 try {
     require ROOT_PATH . 'Engine/Loader.php';
-    E\Loader::getInstance()->init(); // Load necessary classes
+
+    // Initialize and use the refactored Loader
+    $loader = E\Loader::getInstance();
+    $loader->init(); // Load necessary classes
 
     // Default to 'home' controller and 'index' action if no parameters are provided
     $aParams = [
