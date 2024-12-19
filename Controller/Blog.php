@@ -112,6 +112,10 @@ class Blog
             $this->oUtil->oPosts = $this->oModel->getAll();
         }
 
+        // Debug: Check if oPosts is populated
+        var_dump($this->oUtil->oPosts);
+        exit;
+
         $this->oUtil->action = $action;
         $this->oUtil->getView('post_list');
     }

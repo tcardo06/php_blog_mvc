@@ -28,7 +28,7 @@
     </form>
 
     <!-- Display List of Post Titles -->
-    <?php if (empty($this->oPosts)): ?>
+    <?php if (!$this->oPosts): ?>
         <p class="alert alert-warning">Aucun post trouvé.</p>
     <?php else: ?>
         <ul class="list-group">

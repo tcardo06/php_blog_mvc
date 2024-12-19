@@ -39,7 +39,7 @@
         <div class="mb-4">
             <label for="tags" class="form-label">Tags:</label>
             <select name="tags[]" id="tags" class="form-control" multiple="multiple">
-                <?php if (!empty($this->oTags) && is_array($this->oTags)): ?>
+              <?php if ($this->oTags && is_array($this->oTags)): ?>
                     <?php foreach ($this->oTags as $oTag): ?>
                         <option value="<?= $oTag->id ?>" <?= in_array($oTag->id, $this->oPost->tags ?? []) ? 'selected' : '' ?>>
                             <?= htmlspecialchars($oTag->name) ?>

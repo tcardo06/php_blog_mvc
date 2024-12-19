@@ -31,10 +31,10 @@
         </p>
 
         <!-- Display Tags -->
-        <?php if (!empty($this->oTags)): ?>
+        <?php if ($this->oTags): ?>
             <div class="mb-4">
                 <?php foreach ($this->oTags as $oTag): ?>
-                    <span class="badge bg-secondary"><?= htmlspecialchars($oTag->name, ENT_QUOTES, 'UTF-8') ?></span>
+                  <span class="badge bg-secondary"><?= htmlspecialchars($oTag->name, ENT_QUOTES, 'UTF-8') ?></span>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
