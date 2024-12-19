@@ -32,7 +32,7 @@
                     Connecté en tant qu'Admin - <a href="<?=ROOT_URL?>?p=admin&amp;a=logout">Déconnexion</a> &nbsp; | &nbsp;
                     <a href="<?=ROOT_URL?>?p=admin&amp;a=dashboard">Tableau de bord</a>
                 <?php else: ?>
-                    Connecté en tant qu'Utilisateur - <a href="<?=ROOT_URL?>?p=admin&amp;a=logout">Déconnexion</a>
+                    Connecté en tant qu'utilisateur - <a href="<?=ROOT_URL?>?p=admin&amp;a=logout">Déconnexion</a>
                 <?php endif; ?>
             <?php else: ?>
                 <a href="<?=ROOT_URL?>?p=user&amp;a=login">Connexion</a>

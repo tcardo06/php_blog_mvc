@@ -14,7 +14,7 @@
     </div>
 <?php endif; ?>
 
-<?php if (empty($this->oPost)): ?>
+<?php if (!$this->oPost): ?>
     <p class="alert alert-danger">Post introuvable !</p>
 <?php else: ?>
 

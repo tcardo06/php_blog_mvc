@@ -15,7 +15,8 @@
     <h1 class="mb-4">Gérer les commentaires</h1>
 
     <!-- Display List of Comments -->
-    <?php if (empty($this->oComments)): ?>
+    <?php if (!$this->oComments): ?>
+
         <p class="alert alert-warning">Aucun commentaire trouvé.</p>
     <?php else: ?>
         <ul class="list-group">

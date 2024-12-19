@@ -113,8 +113,8 @@ class Blog
         }
 
         // Debug: Check if oPosts is populated
-        var_dump($this->oUtil->oPosts);
-        exit;
+        // var_dump($this->oUtil->oPosts);
+        // exit;
 
         $this->oUtil->action = $action;
         $this->oUtil->getView('post_list');
@@ -247,8 +247,7 @@ class Blog
         return;
     }
 
-    public function manageComments()
-    {
+    public function manageComments() {
         if (!$this->isAdmin()) {
             header('Location: ' . ROOT_URL);
             return;

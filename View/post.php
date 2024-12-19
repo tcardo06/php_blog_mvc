@@ -46,7 +46,7 @@
     <!-- Display Approved Comments -->
     <section class="mt-5">
         <h2>Commentaires</h2>
-        <?php if (empty($this->oComments)): ?>
+        <?php if (!$this->oComments): ?>
             <p class="alert alert-warning">Pas encore de commentaires.</p>
         <?php else: ?>
             <?php foreach ($this->oComments as $oComment): ?>
