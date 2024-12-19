@@ -1,6 +1,6 @@
 <?php require 'inc/header.php'; ?>
 
-<?php if (empty($this->oPost)): ?>
+<?php if (!$this->oPost): ?>
     <p class="alert alert-danger">Le post est introuvable !</p>
 <?php else: ?>
 

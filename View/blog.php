@@ -1,8 +1,11 @@
 <?php require 'inc/header.php'; ?>
 <div class="container mt-5">
-      <!-- Display a message if no posts exist -->
-      <!-- <p class="alert alert-warning">Aucun article de blog pour le moment.</p> -->
-      <?php if (!empty($_SESSION['is_logged']) && $_SESSION['role'] === 'admin'): ?>
+  <!-- Display a message if no posts exist -->
+      <?php if (isset($this->oPosts) && count($this->oPosts) === 0): ?>
+          <p class="alert alert-warning">Aucun article de blog pour le moment.</p>
+      <?php endif; ?>
+
+      <?php if (isset($this->oPosts) && count($this->oPosts) === 0 && !empty($_SESSION['is_logged']) && $_SESSION['role'] === 'admin'): ?>
           <p>
               <button type="button" onclick="window.location='<?=ROOT_URL?>?p=blog&amp;a=add'" class="btn btn-primary">Ajoutez votre premier post de blog !</button>
           </p>
