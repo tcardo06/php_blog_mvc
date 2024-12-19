@@ -4,7 +4,7 @@ namespace TestProject\Engine;
 
 class Util
 {
-    private array $properties = []; // Store dynamic properties
+    private array $properties = []; // For dynamic properties
 
     public function getView($sViewName)
     {
@@ -26,35 +26,53 @@ class Util
         }
     }
 
-    /**
-     * Set a dynamic property.
-     */
+    // Dynamic properties handling
     public function __set(string $key, $value): void
     {
         $this->properties[$key] = $value;
     }
 
-    /**
-     * Get a dynamic property.
-     */
     public function __get(string $key)
     {
-        return $this->properties[$key] ?? null; // Return null if property does not exist
+        return $this->properties[$key] ?? null;
     }
 
-    /**
-     * Check if a dynamic property is set.
-     */
-    public function __isset(string $key): bool
+    // Session helpers
+    public function setSessionData(array $data): void
     {
-        return isset($this->properties[$key]);
+        foreach ($data as $key => $value) {
+            $_SESSION[$key] = $value;
+        }
     }
 
-    /**
-     * Unset a dynamic property.
-     */
-    public function __unset(string $key): void
+    public function getSessionData(): array
     {
-        unset($this->properties[$key]);
+        return [
+            'isLogged' => $_SESSION['is_logged'] ?? false,
+            'userName' => $_SESSION['name'] ?? 'Utilisateur',
+            'role' => $_SESSION['role'] ?? null,
+        ];
+    }
+
+    public function isLogged(): bool
+    {
+        return !empty($_SESSION['is_logged']);
+    }
+
+    public function getRole(): ?string
+    {
+        return $_SESSION['role'] ?? null;
+    }
+
+    public function getUserName(): ?string
+    {
+        return $_SESSION['name'] ?? 'Utilisateur';
+    }
+
+    public function logout(): void
+    {
+        $_SESSION = [];
+        session_unset();
+        session_destroy();
     }
 }

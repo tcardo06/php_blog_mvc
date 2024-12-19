@@ -3,6 +3,15 @@
 namespace TestProject;
 
 use TestProject\Engine as E;
+//php version display for debug or / and demo
+// echo '<p style="font-family: Arial, sans-serif; background: #f4f4f4; padding: 10px; border: 1px solid #ccc;">';
+// echo 'PHP Version: ' . PHP_VERSION;
+// echo '</p>';
+
+// Start the session globally
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (version_compare(PHP_VERSION, '5.5.0', '<')) {
     throw new \Exception('Your PHP version is ' . PHP_VERSION . '. The script requires PHP 5.5 or higher.');

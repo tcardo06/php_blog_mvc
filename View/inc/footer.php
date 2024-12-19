@@ -1,8 +1,3 @@
-<?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-?>
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
   <head>
@@ -23,30 +18,26 @@ if (session_status() == PHP_SESSION_NONE) {
     </style>
   </head>
   <body>
-      <footer class="mt-5">
-          <p class="italic text-center">
-              <!-- GitHub and LinkedIn icons with Bootstrap Icons -->
-              <a href="https://github.com/tcardo06/php_blog_mvc" target="_blank" title="GitHub" class="me-3 social-icon-link">
-                  <i class="bi bi-github social-icon"></i>
-              </a>
-              <a href="https://www.linkedin.com/in/thomas-cardoso/" target="_blank" title="LinkedIn" class="me-3 social-icon-link">
-                  <i class="bi bi-linkedin social-icon"></i>
-              </a>
-              &nbsp; | &nbsp;
-              <?php if (!empty($_SESSION['is_logged'])): ?>
-                  <?php if ($_SESSION['role'] === 'admin'): ?>
-                      <!-- Only display for admin users -->
-                      Connecté en tant qu'Admin - <a href="<?=ROOT_URL?>?p=admin&amp;a=logout">Déconnexion</a> &nbsp; | &nbsp;
-                      <a href="<?=ROOT_URL?>?p=admin&amp;a=dashboard">Tableau de bord</a>
-                  <?php else: ?>
-                      <!-- For non-admin users -->
-                      Connecté en tant qu'Utilisateur - <a href="<?=ROOT_URL?>?p=admin&amp;a=logout">Déconnexion</a>
-                  <?php endif; ?>
-              <?php else: ?>
-                  <a href="<?=ROOT_URL?>?p=user&amp;a=login">Connexion</a>
-              <?php endif; ?>
-          </p>
-      </footer>
-    </div>
+    <footer class="mt-5">
+        <p class="italic text-center">
+            <a href="https://github.com/tcardo06/php_blog_mvc" target="_blank" title="GitHub" class="me-3 social-icon-link">
+                <i class="bi bi-github social-icon"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/thomas-cardoso/" target="_blank" title="LinkedIn" class="me-3 social-icon-link">
+                <i class="bi bi-linkedin social-icon"></i>
+            </a>
+            &nbsp; | &nbsp;
+            <?php if ($this->isLogged): ?>
+                <?php if ($this->role === 'admin'): ?>
+                    Connecté en tant qu'Admin - <a href="<?=ROOT_URL?>?p=admin&amp;a=logout">Déconnexion</a> &nbsp; | &nbsp;
+                    <a href="<?=ROOT_URL?>?p=admin&amp;a=dashboard">Tableau de bord</a>
+                <?php else: ?>
+                    Connecté en tant qu'Utilisateur - <a href="<?=ROOT_URL?>?p=admin&amp;a=logout">Déconnexion</a>
+                <?php endif; ?>
+            <?php else: ?>
+                <a href="<?=ROOT_URL?>?p=user&amp;a=login">Connexion</a>
+            <?php endif; ?>
+        </p>
+    </footer>
   </body>
 </html>

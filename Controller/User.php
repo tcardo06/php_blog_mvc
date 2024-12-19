@@ -45,39 +45,31 @@ class User extends Blog
 
   public function login()
   {
-      if (isset($_POST['email'], $_POST['password'])) {
+      if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           $this->oUtil->getModel('User');
           $this->oModel = new \TestProject\Model\User;
 
-          // Set the email in the model
           $this->oModel->setEmail($_POST['email']);
-
-          // Fetch the user
           $oUser = $this->oModel->login();
 
           if ($oUser && password_verify($_POST['password'], $oUser->password)) {
-              // Set session variables
-              $_SESSION['is_logged'] = 1;
-              $_SESSION['user_id'] = $oUser->id;
-              $_SESSION['name'] = $oUser->name;
-              $_SESSION['role'] = $oUser->role;
+              $this->oUtil->setSessionData([
+                  'is_logged' => true,
+                  'user_id' => $oUser->id,
+                  'name' => $oUser->name,
+                  'role' => $oUser->role,
+              ]);
 
-              // Redirect based on role
-              try {
-                  if ($oUser->role === 'admin') {
-                      $this->redirect(ROOT_URL . '?p=admin&a=dashboard');
-                  } else {
-                      $this->redirect(ROOT_URL . '?p=blog');
-                  }
-              } catch (\Exception $e) {
-                  $this->oUtil->sErrMsg = $e->getMessage();
-              }
-          } else {
-              $this->oUtil->sErrMsg = 'Email ou mot de passe incorrect!';
+              $redirectUrl = $oUser->role === 'admin' ? ROOT_URL . '?p=admin&a=dashboard' : ROOT_URL . '?p=blog';
+              header('Location: ' . $redirectUrl);
+              return;
           }
+
+          $this->oUtil->sErrMsg = 'Email ou mot de passe incorrect!';
       }
 
-      // Load the login view
+      // Pass session data to the View
+      $this->oUtil->isLogged = $this->oUtil->isLogged();
       $this->oUtil->getView('login');
   }
 

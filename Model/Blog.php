@@ -244,9 +244,20 @@ class Blog
                 FROM posts p
                 JOIN users u ON p.author_id = u.id
                 ORDER BY p.createdDate DESC';
-        $oStmt = $this->oDb->query($sql);
-        return $oStmt->fetchAll(\PDO::FETCH_OBJ);
+
+        try {
+            $oStmt = $this->oDb->prepare($sql);
+            $oStmt->execute();
+
+            $result = $oStmt->fetchAll(\PDO::FETCH_OBJ);
+            return $result;
+        } catch (\PDOException $e) {
+            // Display SQL error
+            // echo 'SQL Error: ' . $e->getMessage();
+            return [];
+        }
     }
+
 
     // Search posts by title
     public function searchByName($searchQuery)

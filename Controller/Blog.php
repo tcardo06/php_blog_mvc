@@ -11,13 +11,16 @@ class Blog
 
     public function __construct()
     {
-        if (session_status() == PHP_SESSION_NONE) {
+        if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
         $this->oUtil = new \TestProject\Engine\Util;
+        $sessionData = $this->oUtil->getSessionData();
+        $this->oUtil->isLogged = $sessionData['isLogged'];
+        $this->oUtil->userName = $sessionData['userName'];
+        $this->oUtil->role = $sessionData['role'];
 
-        /** Get the Model class in all the controller classes **/
         $this->oUtil->getModel('Blog');
         $this->oModel = new \TestProject\Model\Blog;
 
@@ -30,6 +33,12 @@ class Blog
     public function index()
     {
         $this->oUtil->oPosts = $this->oModel->getPostsWithAuthors();
+
+        // Pass session data to the View
+        $this->oUtil->isLogged = $this->oUtil->isLogged();
+        $this->oUtil->role = $this->oUtil->getRole();
+        $this->oUtil->userName = $this->oUtil->getUserName();
+
         $this->oUtil->getView('blog');
     }
 

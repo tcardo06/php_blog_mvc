@@ -1,8 +1,3 @@
-<?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -29,7 +24,7 @@ if (session_status() == PHP_SESSION_NONE) {
                   </li>
               </ul>
               <ul class="navbar-nav ms-auto">
-                  <?php if (!isset($_SESSION['is_logged'])): ?>
+                  <?php if (!$this->isLogged): ?>
                       <li class="nav-item">
                           <a class="nav-link" href="<?=ROOT_URL?>?p=user&a=login">Connexion</a>
                       </li>
@@ -39,7 +34,7 @@ if (session_status() == PHP_SESSION_NONE) {
                   <?php else: ?>
                       <li class="nav-item d-flex align-items-center">
                           <span class="navbar-text me-3">
-                              <strong>Connecté en tant que : <?= isset($_SESSION['name']) ? htmlspecialchars($_SESSION['name']) : 'Utilisateur'; ?></strong>
+                              <strong>Connecté en tant que : <?= htmlspecialchars($this->userName); ?></strong>
                           </span>
                           <a class="nav-link" href="<?=ROOT_URL?>?p=admin&a=logout">Déconnexion</a>
                       </li>
