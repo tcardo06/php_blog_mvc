@@ -17,7 +17,7 @@ class Db extends \PDO
                 ]
             );
         } catch (\PDOException $e) {
-            die('Database connection failed: ' . $e->getMessage());
-        }
+            throw new \Exception('Database connection failed: ' . $e->getMessage());
+        }        
     }
 }

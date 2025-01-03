@@ -61,34 +61,32 @@ class Contact
     {
         // Retrieve mail configuration
         $mailConfig = require ROOT_PATH . 'mail_config.php';
-
+    
         // Create a new PHPMailer instance
         $mail = new PHPMailer(true);
-
+    
         try {
             // Enable verbose debug output
-            $mail->SMTPDebug = 4; // Most detailed debug level
+/*             $mail->SMTPDebug = 4; // Detailed debug level
             $mail->Debugoutput = function ($str, $level) {
                 file_put_contents(ROOT_PATH . 'logs/email_debug.log', date('[Y-m-d H:i:s]') . " Level $level: $str\n", FILE_APPEND);
-            };
-
+            }; */
+    
             // Configure SMTP settings
             $mail->isSMTP();
             $mail->Host = $mailConfig['SMTP_HOST'];
-            $mail->SMTPAuth = true;
-            $mail->Username = $mailConfig['SMTP_USER'];
-            $mail->Password = $mailConfig['SMTP_PASS'];
-            $mail->SMTPSecure = $mailConfig['SMTP_SECURE'];
+            $mail->SMTPAuth = false;
             $mail->Port = $mailConfig['SMTP_PORT'];
-
+            $mail->SMTPSecure = $mailConfig['SMTP_SECURE'];
+    
             // Set sender and recipient
             $mail->setFrom($this->getEmail(), $this->getName());
-            $mail->addAddress($mailConfig['SMTP_USER']); // Your email address
-
+            $mail->addAddress('tcardo0606@gmail.com');
+    
             // Email subject and body
             $mail->Subject = 'Nouveau message via le formulaire de contact';
             $mail->Body = "Nom: {$this->getName()}\nEmail: {$this->getEmail()}\nMessage:\n{$this->getMessage()}";
-
+    
             // Send the email
             return $mail->send();
         } catch (Exception $e) {
@@ -101,8 +99,7 @@ class Contact
             return false;
         }
     }
-
-
+    
     // Function to handle form submission
     public function submit()
       {
@@ -127,7 +124,7 @@ class Contact
 
       // Redirect back to the home page
       header('Location: ' . ROOT_URL);
-      exit;
+      return;      
   }
 
     public function confirmation()
