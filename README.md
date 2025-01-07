@@ -21,6 +21,7 @@ Choisissez la méthode qui convient le mieux à vos besoins de développement ou
   - [Étapes de déploiement](#étapes-de-déploiement)
   - [Configuration de la base de données ClearDB](#configuration-de-la-base-de-données-cleardb)
   - [Variables d'environnement](#variables-denvironnement)
+- [Tester les emails localement avec MailHog](#tester-les-emails-localement-avec-mailhog)
 - [Dépannage](#dépannage)
 
 ## Installation locale avec XAMPP
@@ -132,6 +133,45 @@ if ($conn->connect_error) {
     throw new Exception("Échec de la connexion : " . $conn->connect_error);
 }
 ```
+
+## Tester les emails localement avec MailHog
+
+Pour tester la fonctionnalité d'envoi d'emails en local, nous utilisons [MailHog](https://github.com/mailhog/MailHog). Cet outil capture les emails envoyés par l'application et permet de les visualiser dans une interface web.
+
+### Prérequis
+
+- Téléchargez MailHog depuis la [page des releases](https://github.com/mailhog/MailHog/releases).
+- Assurez-vous que MailHog est accessible dans votre environnement local.
+
+### Étapes d'installation
+
+1. Téléchargez le fichier binaire de MailHog correspondant à votre système (par exemple, `MailHog_windows_386.exe` pour Windows).
+2. Placez ce fichier dans un dossier accessible.
+3. Lancez MailHog en exécutant :
+   ```bash
+   ./MailHog_windows_386.exe
+   ```
+   MailHog sera disponible à l'adresse `http://localhost:8025`.
+
+### Configuration de l'application pour MailHog
+
+1. Modifiez le fichier `mail_config.php` pour utiliser les paramètres de MailHog :
+   ```php
+   return [
+       'SMTP_HOST' => '127.0.0.1',
+       'SMTP_USER' => '', // Pas de nom d'utilisateur nécessaire
+       'SMTP_PASS' => '', // Pas de mot de passe nécessaire
+       'SMTP_PORT' => 1025,
+       'SMTP_SECURE' => '' // Pas de chiffrement nécessaire
+   ];
+   ```
+
+2. Avec ces paramètres, tous les emails envoyés par votre application seront capturés par MailHog et affichés à l'adresse `http://localhost:8025`.
+
+### Vérification
+
+- Ouvrez votre navigateur et accédez à `http://localhost:8025`.
+- Vous devriez voir les emails capturés par MailHog après l'envoi d'un formulaire de contact.
 
 ## Dépannage
 
