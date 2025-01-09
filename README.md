@@ -155,7 +155,7 @@ Pour tester la fonctionnalité d'envoi d'emails en local, nous utilisons [MailHo
 
 ### Configuration de l'application pour MailHog
 
-1. Modifiez le fichier `mail_config.php` pour utiliser les paramètres de MailHog :
+1. Modifier ou créer le fichier `mail_config.php` pour utiliser les paramètres de MailHog :
    ```php
    return [
        'SMTP_HOST' => '127.0.0.1',
