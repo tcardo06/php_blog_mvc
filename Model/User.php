@@ -7,6 +7,7 @@ class User extends Blog
     private $name;
     private $email;
     private $password;
+    private $role;
 
     // Getters and setters for name, email, and password
     public function getName()
@@ -37,6 +38,16 @@ class User extends Blog
     public function setPassword($password)
     {
         $this->password = $password;
+    }
+
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    public function setRole($role)
+    {
+        $this->role = $role;
     }
 
     // Check if an email is already registered
