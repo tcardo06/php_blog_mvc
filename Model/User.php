@@ -2,7 +2,7 @@
 
 namespace TestProject\Model;
 
-class User extends Blog
+class User extends Post
 {
     private $name;
     private $email;

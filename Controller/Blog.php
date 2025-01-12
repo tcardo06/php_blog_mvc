@@ -21,8 +21,8 @@ class Blog
         $this->oUtil->userName = $sessionData['userName'];
         $this->oUtil->role = $sessionData['role'];
 
-        $this->oUtil->getModel('Blog');
-        $this->oModel = new \TestProject\Model\Blog;
+        $this->oUtil->getModel('Post');
+        $this->oModel = new \TestProject\Model\Post;
 
         /** Get the Post ID in the constructor in order to avoid the duplication of the same code **/
         $this->_iId = (int) (!empty($_GET['id']) ? $_GET['id'] : 0);

@@ -2,7 +2,7 @@
 
 namespace TestProject\Model;
 
-class Blog
+class Post
 {
     protected $oDb;
 

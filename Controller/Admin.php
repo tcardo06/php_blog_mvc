@@ -35,4 +35,3 @@ class Admin extends Blog
         $this->oUtil->getView('dashboard');
     }
 }
-
